@@ -4,7 +4,7 @@ import { TSESTreeToTSNode } from "@typescript-eslint/typescript-estree";
 type MessageIds = "avoidHref";
 type Options = [];
 
-export default ESLintUtils.RuleCreator((name) => "google.com")<
+export default ESLintUtils.RuleCreator((name) => `https://github.com/C-Hess/eslint-plugin-cameron/blob/main/docs/${name}.md`)<
   Options,
   MessageIds
 >({
