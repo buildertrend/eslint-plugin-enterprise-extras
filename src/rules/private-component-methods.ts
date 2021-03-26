@@ -1,10 +1,5 @@
 import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
-import { isMethodDeclaration } from "typescript";
-import {
-  isClassProperty,
-  isMethod,
-  isMethodDefinition,
-} from "../utils/type-guards";
+import { isMethod } from "../utils/type-guards";
 
 type MessageIds = "privateMethods";
 type Options = [];
@@ -20,7 +15,7 @@ const reactLifecycleMethods = new Set([
   "componentWillUnmount",
   "getDerivedStateFromProps",
   "getSnapshotBeforeUpdate",
-  "constructor"
+  "constructor",
 ]);
 
 const isLifecycleMethod = (
