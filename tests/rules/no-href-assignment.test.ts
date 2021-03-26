@@ -30,11 +30,11 @@ ruleTester.run("no-href-assignment", rule, {
   invalid: [
     {
       code: `
-window.location.href = "http://google.com";
-            `,
+        window.location.href = "http://google.com";
+      `,
       output: `
-window.location.assign("http://google.com");
-            `,
+        window.location.assign("http://google.com");
+      `,
       errors: [
         {
           messageId: "avoidHref",
@@ -43,11 +43,11 @@ window.location.assign("http://google.com");
     },
     {
       code: `
-window.top.location.href = "http://google.com";
-              `,
+        window.top.location.href = "http://google.com";
+      `,
       output: `
-window.top.location.assign("http://google.com");
-              `,
+        window.top.location.assign("http://google.com");
+      `,
       errors: [
         {
           messageId: "avoidHref",
@@ -56,13 +56,13 @@ window.top.location.assign("http://google.com");
     },
     {
       code: `
-const { location: test } = window;
-test.href = "test123";
-              `,
+        const { location: test } = window;
+        test.href = "test123";
+      `,
       output: `
-const { location: test } = window;
-test.assign("test123");
-              `,
+        const { location: test } = window;
+        test.assign("test123");
+      `,
       errors: [
         {
           messageId: "avoidHref",
