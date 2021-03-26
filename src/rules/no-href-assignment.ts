@@ -38,7 +38,7 @@ const isWindowLocationType = (type: Type) => {
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/C-Hess/eslint-plugin-cameron/blob/main/docs/${name}.md`
+    `https://github.com/C-Hess/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
 )<Options, MessageIds>({
   name: "no-href-assignment",
   meta: {

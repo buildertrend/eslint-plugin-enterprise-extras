@@ -1,8 +1,9 @@
 {
-    "name": "eslint-plugin-cameron",
-    "description": "ESLint plugin development playground",
+    "name": "eslint-plugin-enterprise-extras",
+    "description": "Additional ESLint rules for enterprise environments",
     "version": "1.0.0",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^3.10.1",
         "@typescript-eslint/parser": "^3.10.1",
@@ -20,6 +21,7 @@
     },
     "scripts": {
         "build": "tsc",
+        "prepublish": "tsc",
         "test": "jest --watch",
         "test-ci": "jest"
     }
