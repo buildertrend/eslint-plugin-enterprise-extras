@@ -17,7 +17,9 @@ export const isMethod = (
   node: TSESTree.ClassElement
 ): node is TSESTree.ClassProperty | TSESTree.MethodDefinition => {
   return (
-    (isClassProperty(node) && funcExpRegex.test(node.value.type)) ||
+    (isClassProperty(node) &&
+      node.value &&
+      funcExpRegex.test(node.value.type)) ||
     isMethodDefinition(node)
   );
 };

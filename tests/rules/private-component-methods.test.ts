@@ -57,6 +57,11 @@ ruleTester.run("private-component-methods", rule, {
             }
         }
     `,
+    `
+        class TestComponent extends React.Component {
+          private prop;
+        }
+    `
   ],
 
   invalid: [{
@@ -105,6 +110,24 @@ ruleTester.run("private-component-methods", rule, {
     output: `
         class TestComponent extends React.Component {
             private nonPrivateMethod = function() {}
+            render() { return null; }
+        }
+    `,
+    errors: [
+      {
+        messageId: "privateMethods",
+      },
+    ],
+  }, {
+    code: `
+        class TestComponent extends React.Component {
+            get nonPrivateMethod() {}
+            render() { return null; }
+        }
+    `,
+    output: `
+        class TestComponent extends React.Component {
+            private get nonPrivateMethod() {}
             render() { return null; }
         }
     `,
