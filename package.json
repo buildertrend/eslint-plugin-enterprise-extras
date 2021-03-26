@@ -2,7 +2,7 @@
     "name": "eslint-plugin-cameron",
     "description": "ESLint plugin development playground",
     "version": "1.0.0",
-    "main": "dist/src/index.js",
+    "main": "dist/index.js",
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^3.10.1",
         "@typescript-eslint/parser": "^3.10.1",
@@ -20,6 +20,7 @@
     },
     "scripts": {
         "build": "tsc",
-        "test": "jest"
+        "test": "jest --watch",
+        "test-ci": "jest"
     }
 }

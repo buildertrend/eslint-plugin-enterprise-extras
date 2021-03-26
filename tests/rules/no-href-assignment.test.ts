@@ -1,37 +1,73 @@
-import rule from '../../src/rules/no-href-assignment';
-import { TSESLint } from "@typescript-eslint/experimental-utils"
-import { resolve, join } from 'path';
+import rule from "../../src/rules/no-href-assignment";
+import { ESLintUtils } from "@typescript-eslint/experimental-utils";
+import { resolve, join } from "path";
 
-const ruleTester = new TSESLint.RuleTester({
-  parser: resolve("./node_modules/@typescript-eslint/parser"),
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: resolve("./node_modules/@typescript-eslint/parser") as any,
   parserOptions: {
-    sourceType: "module",
+    ecmaVersion: 2018,
     tsconfigRootDir: join(__dirname, "../fixtures"),
     project: "./tsconfig.json",
-  }
+  },
 });
 
 ruleTester.run("no-href-assignment", rule, {
-    valid: [
-        {
-            code: `
-window.location.href
-            `
+  valid: [
+    "window.location.href;",
+    'window.location.href === "test";',
+    `
+        () => {
+            type Location = {
+                href: string;
+            }
+            
+            (tst: Location) => {
+                tst.href = "test";
+            }
         }
-    ],
-    invalid: [
-        {
-            code: `
+    `    
+  ],
+  invalid: [
+    {
+      code: `
 window.location.href = "http://google.com";
             `,
-            output: `
+      output: `
 window.location.assign("http://google.com");
             `,
-            errors: [
-                {
-                    messageId: "avoidHref"
-                }
-            ]
-        }
-    ]
-})
+      errors: [
+        {
+          messageId: "avoidHref",
+        },
+      ],
+    },
+    {
+      code: `
+window.top.location.href = "http://google.com";
+              `,
+      output: `
+window.top.location.assign("http://google.com");
+              `,
+      errors: [
+        {
+          messageId: "avoidHref",
+        },
+      ],
+    },
+    {
+      code: `
+const { location: test } = window;
+test.href = "test123";
+              `,
+      output: `
+const { location: test } = window;
+test.assign("test123");
+              `,
+      errors: [
+        {
+          messageId: "avoidHref",
+        },
+      ],
+    },
+  ],
+});

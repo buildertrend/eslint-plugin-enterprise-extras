@@ -1,4 +1,10 @@
 import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
+import { isMethodDeclaration } from "typescript";
+import {
+  isClassProperty,
+  isMethod,
+  isMethodDefinition,
+} from "../utils/type-guards";
 
 type MessageIds = "privateMethods";
 type Options = [];
@@ -13,16 +19,23 @@ const reactLifecycleMethods = new Set([
   "componentDidUpdate",
   "componentWillUnmount",
   "getDerivedStateFromProps",
+  "getSnapshotBeforeUpdate",
+  "constructor"
 ]);
 
-const isLifecycleMethod = (identifier: TSESTree.Identifier) => {
-  return reactLifecycleMethods.has(identifier.name);
+const isLifecycleMethod = (
+  method: TSESTree.ClassProperty | TSESTree.MethodDefinition
+) => {
+  return (
+    method.key.type === "Identifier" &&
+    reactLifecycleMethods.has(method.key.name)
+  );
 };
 
-export default ESLintUtils.RuleCreator((name) => `https://github.com/C-Hess/eslint-plugin-cameron/blob/main/docs/${name}.md`)<
-  Options,
-  MessageIds
->({
+export default ESLintUtils.RuleCreator(
+  (name) =>
+    `https://github.com/C-Hess/eslint-plugin-cameron/blob/main/docs/${name}.md`
+)<Options, MessageIds>({
   name: "private-component-methods",
   meta: {
     type: "suggestion",
@@ -46,25 +59,14 @@ export default ESLintUtils.RuleCreator((name) => `https://github.com/C-Hess/esli
         classDecl: TSESTree.ClassDeclaration
       ) => {
         classDecl.body.body
-          .filter((b) => {
-            if (b.type === "ClassProperty") {
-              const classProp = b as TSESTree.ClassProperty;
-              return (
-                /^(Arrow)?FunctionExpression$/.test(classProp.value.type) &&
-                !classProp.static &&
-                classProp.accessibility !== "private"
-              );
-            } else if (b.type === "MethodDefinition") {
-              const methodDef = b as TSESTree.MethodDefinition;
-              return !methodDef.static && methodDef.accessibility !== "private";
-            } else {
-              return false;
-            }
+          .filter((classEl) => {
+            return (
+              isMethod(classEl) &&
+              !classEl.static &&
+              classEl.accessibility !== "private" &&
+              !isLifecycleMethod(classEl)
+            );
           })
-          .filter(
-            (b: TSESTree.ClassProperty | TSESTree.MethodDefinition) =>
-              b.key.type === "Identifier" && !isLifecycleMethod(b.key)
-          )
           .map((b: TSESTree.ClassProperty | TSESTree.MethodDefinition) => b.key)
           .forEach((b) =>
             context.report({
