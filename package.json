@@ -25,8 +25,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --watch",
-    "test-ci": "jest",
-    "publish": "tsc && npm publish"
+    "test-ci": "jest"
   },
   "directories": {
     "doc": "docs",
