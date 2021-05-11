@@ -33,7 +33,7 @@ class BadExample3 extends React.Component {
 }
 
 class BadExample4 extends React.Component {
-   get gettersAreAlsoChecked() { return "No good" }
+  get gettersAreAlsoChecked() { return "No good" }
 
   render() {
     return <div>{this.gettersAreAlsoChecked}</div>;
