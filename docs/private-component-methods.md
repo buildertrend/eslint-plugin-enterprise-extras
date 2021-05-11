@@ -33,10 +33,10 @@ class BadExample3 extends React.Component {
 }
 
 class BadExample4 extends React.Component {
-  myProperty = "public class properties are also bad";
+   get gettersAreAlsoChecked() { return "No good" }
 
   render() {
-    return <div>{this.myProperty}</div>;
+    return <div>{this.gettersAreAlsoChecked}</div>;
   }
 }
 ```
@@ -65,14 +65,6 @@ class GoodExample3 extends React.Component {
 
   render() {
     return <button onClick={this.handleClick}>Test Button</button>;
-  }
-}
-
-class GoodExample4 extends React.Component {
-  private myProperty = "public class properties are also bad";
-
-  render() {
-    return <div>{this.myProperty}</div>;
   }
 }
 ```
