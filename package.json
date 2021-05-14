@@ -1,28 +1,51 @@
 {
-    "name": "eslint-plugin-enterprise-extras",
-    "description": "Additional ESLint rules for enterprise environments",
-    "version": "1.0.0",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "dependencies": {
-        "@typescript-eslint/eslint-plugin": "^3.10.1",
-        "@typescript-eslint/parser": "^3.10.1",
-        "eslint": "^7.9.0"
-    },
-    "devDependencies": {
-        "@types/node": "14.14.35",
-        "typescript": "4.0.6",
-        "prettier": "1.19.1",
-        "ts-jest": "26.5.4",
-        "jest": "26.6.3"
-    },
-    "peerDependencies": {
-        "eslint": "^7"
-    },
-    "scripts": {
-        "build": "tsc",
-        "prepublish": "tsc",
-        "test": "jest --watch",
-        "test-ci": "jest"
-    }
+  "name": "@c-hess/eslint-plugin-enterprise-extras",
+  "description": "Extra eslint rules for enterprise environments focusing on React and Typescript",
+  "version": "1.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "eslint": "^7.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "14.14.35",
+    "typescript": "4.0.6",
+    "prettier": "1.19.1",
+    "ts-jest": "26.5.4",
+    "jest": "26.6.3"
+  },
+  "peerDependencies": {
+    "eslint": "^7"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --watch",
+    "test-ci": "jest"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/C-Hess/eslint-plugin-enterprise-extras.git"
+  },
+  "keywords": [
+    "eslint",
+    "plugin",
+    "enterprise",
+    "typescript",
+    "react"
+  ],
+  "author": "Cameron Hessler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/C-Hess/eslint-plugin-enterprise-extras/issues"
+  },
+  "homepage": "https://github.com/C-Hess/eslint-plugin-enterprise-extras#readme"
 }

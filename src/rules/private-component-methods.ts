@@ -62,10 +62,9 @@ export default ESLintUtils.RuleCreator(
               !isLifecycleMethod(classEl)
             );
           })
-          .map((b: TSESTree.ClassProperty | TSESTree.MethodDefinition) => b.key)
-          .forEach((b) =>
+          .forEach((b: TSESTree.ClassProperty | TSESTree.MethodDefinition) =>
             context.report({
-              node: b,
+              node: b.key,
               messageId: "privateMethods",
               fix: (fixer) => fixer.insertTextBefore(b, "private "),
             })

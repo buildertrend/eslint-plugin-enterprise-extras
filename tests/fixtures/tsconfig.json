@@ -7,5 +7,5 @@
       "esModuleInterop": true,
       "experimentalDecorators": true,
     },
-    "include": ["**/*.ts"],
+    "include": ["**/*.ts*"],
   }
