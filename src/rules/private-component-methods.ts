@@ -29,7 +29,7 @@ const isLifecycleMethod = (
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/C-Hess/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
 )<Options, MessageIds>({
   name: "private-component-methods",
   meta: {
