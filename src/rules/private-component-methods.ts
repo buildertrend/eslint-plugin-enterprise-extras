@@ -37,7 +37,7 @@ export default ESLintUtils.RuleCreator(
     fixable: "code",
     docs: {
       category: "Best Practices",
-      recommended: false,
+      recommended: "error",
       description:
         "Non-lifecycle methods for React class components should be private to help find unused handlers",
     },
