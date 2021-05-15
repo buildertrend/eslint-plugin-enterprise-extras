@@ -27,7 +27,7 @@ const getParentObjectOfMemberExpression = (
 };
 
 const libDomFileNameRegex = /typescript.+lib.+lib\.dom\.d\.ts/
-const isTypeDeclarationFromLibDom = (declaration: Declaration) => {
+const isTypeDeclarationFromLibDom = (declaration: Declaration | undefined | null) => {
   return libDomFileNameRegex.test(declaration?.getSourceFile().fileName);
 };
 
@@ -38,7 +38,7 @@ const isWindowLocationType = (type: Type) => {
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/C-Hess/eslint-plugin-cameron/blob/main/docs/${name}.md`
+    `https://github.com/C-Hess/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
 )<Options, MessageIds>({
   name: "no-href-assignment",
   meta: {
@@ -46,12 +46,12 @@ export default ESLintUtils.RuleCreator(
     fixable: "code",
     docs: {
       category: "Best Practices",
-      recommended: false,
-      description: "Prefer using location.assigned to make testing easier",
+      recommended: "error",
+      description: "Prefer using location.assign() to make testing easier",
     },
     messages: {
       avoidHref:
-        "Prefer using location.assigned instead of href direct assignments",
+        "Prefer using location.assign() instead of href direct assignments",
     },
     schema: [],
   },

@@ -23,3 +23,12 @@ export const isMethod = (
     isMethodDefinition(node)
   );
 };
+
+export const isIdentifier = (node: TSESTree.Expression): node is TSESTree.Identifier => {
+  return node.type === "Identifier";
+}
+
+export const isAsExpression = (node: TSESTree.Expression): node is TSESTree.TSAsExpression => {
+  return node.type === "TSAsExpression";
+}
+
