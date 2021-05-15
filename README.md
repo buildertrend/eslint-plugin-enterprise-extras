@@ -1,14 +1,21 @@
 # eslint-plugin-enterprise-extras
+
 This plugin adds extra ESLint rules that may be more suitable for an enterprise environment. The rules were created for use within Buildertrend, but feel free to request or propose any ESLint rules that may fall under this umbrella.
 
 ------------
-# Installation
+
+## Installation
+
 Install this ESLint plugin as a dev dependency:
+
 ```bash
 npm install --save-dev eslint-plugin-enterprise-extras
 ```
-# Usage
+
+## Usage
+
 Edit your project's `.eslintrc.js` configuration to load the plugin:
+
 ```js
 module.exports = {
     plugins: ["enterprise-extras"],
@@ -19,7 +26,9 @@ module.exports = {
     }
 }
 ```
+
 Alternatively, you could use the `recommended` or `all` preset rule configurations:
+
 ```js
 module.exports = {
     extends: ["plugin:enterprise-extras/recommended"],
@@ -29,12 +38,17 @@ module.exports = {
     }
 }
 ```
-# Supported Rules
+
+## Supported Rules
+
 ✅ = Recommended
 🔧 = Auto-fixable
 | Name                                               | ✅ | 🔧 | Description |
 | -------------------------------------------------- | - | - | ----------- |
-| [no-href-assignment](/docs/no-href-assignment.md)  | ✅ | 🔧 | Prefers `location.assign` instead of `location.href = ` |
+| [no-href-assignment](/docs/no-href-assignment.md)  | ✅ | 🔧 | Prefers `location.assign` instead of `location.href =` |
 | [private-component-methods](/docs/private-component-methods.md)  | ✅ | 🔧 | Requires that all methods of react components are private (except reserved lifecycle methods) |
-# LICENSE
+| [no-unhandled-scheduling](/docs/no-unhandled-scheduling.md)  | ✅ |  | `setTimeout` and `setInterval` calls should be cleared |
+
+## LICENSE
+
 MIT

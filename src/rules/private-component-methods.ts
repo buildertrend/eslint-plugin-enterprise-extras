@@ -29,7 +29,7 @@ const isLifecycleMethod = (
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/C-Hess/eslint-plugin-cameron/blob/main/docs/${name}.md`
+    `https://github.com/C-Hess/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
 )<Options, MessageIds>({
   name: "private-component-methods",
   meta: {
@@ -37,7 +37,7 @@ export default ESLintUtils.RuleCreator(
     fixable: "code",
     docs: {
       category: "Best Practices",
-      recommended: false,
+      recommended: "error",
       description:
         "Non-lifecycle methods for React class components should be private to help find unused handlers",
     },

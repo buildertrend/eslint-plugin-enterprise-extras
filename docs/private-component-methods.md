@@ -68,7 +68,11 @@ class GoodExample3 extends React.Component {
   }
 }
 ```
+
 ## When Not To Use It
+
 If you are okay with public methods in your React components and find the pattern acceptable.
+
 ## Auto-fixable?
+
 Yes ✔️
