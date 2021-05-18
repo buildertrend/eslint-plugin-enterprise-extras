@@ -7,6 +7,9 @@ type Options = [];
 const reactLifecycleMethods = new Set([
   "componentWillMount",
   "render",
+  "UNSAFE_componentWillMount",
+  "UNSAFE_componentWillReceiveProps",
+  "UNSAFE_componentWillUpdate",
   "componentDidMount",
   "componentWillReceiveProps",
   "shouldComponentUpdate",
@@ -16,6 +19,7 @@ const reactLifecycleMethods = new Set([
   "getDerivedStateFromProps",
   "getSnapshotBeforeUpdate",
   "constructor",
+  "componentDidCatch",
 ]);
 
 const isLifecycleMethod = (
