@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-enterprise-extras",
   "description": "Extra eslint rules for enterprise environments focusing on React and Typescript",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -42,7 +42,13 @@
     "typescript",
     "react"
   ],
-  "author": "Cameron Hessler",
+  "author": "Buildertrend",
+  "contributors": [
+	  {
+      "name": "Cameron Hessler",
+      "email": "cameron.hessler@buildertrend.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/buildertrend/eslint-plugin-enterprise-extras/issues"
