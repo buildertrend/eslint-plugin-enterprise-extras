@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/node": "14.14.35",
     "jest": "26.6.3",
-    "prettier": "1.19.1",
+    "prettier": "2.3.1",
     "rimraf": "3.0.2",
     "ts-jest": "26.5.4",
     "typescript": "4.0.6"
@@ -25,10 +25,13 @@
   },
   "scripts": {
     "clean": "rimraf dist/",
+    "prettier:check": "prettier --check package.json jest.config.js tsconfig.json \"src/**/*\" \"tests/**/*\"",
     "prebuild": "npm run clean",
     "build": "tsc",
+    "postbuild": "npm run test:ci",
     "test": "jest --watch",
-    "test-ci": "jest"
+    "test:ci": "jest && npm run prettier-check",
+    "prepublishOnly": "npm run build"
   },
   "directories": {
     "doc": "docs",
