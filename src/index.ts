@@ -14,7 +14,7 @@ export = {
       rules: {
         "enterprise-extras/no-href-assignment": "error",
         "enterprise-extras/private-component-methods": "error",
-        "enterprise-extras/no-unhandled-scheduling": "warn"
+        "enterprise-extras/no-unhandled-scheduling": "warn",
       },
     },
     all: {
@@ -22,8 +22,8 @@ export = {
       rules: {
         "enterprise-extras/no-href-assignment": "error",
         "enterprise-extras/private-component-methods": "error",
-        "enterprise-extras/no-unhandled-scheduling": "error"
+        "enterprise-extras/no-unhandled-scheduling": "error",
       },
-    }
-  }
+    },
+  },
 };

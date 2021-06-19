@@ -26,14 +26,19 @@ const getParentObjectOfMemberExpression = (
   }
 };
 
-const libDomFileNameRegex = /typescript.+lib.+lib\.dom\.d\.ts/
-const isTypeDeclarationFromLibDom = (declaration: Declaration | undefined | null) => {
+const libDomFileNameRegex = /typescript.+lib.+lib\.dom\.d\.ts/;
+const isTypeDeclarationFromLibDom = (
+  declaration: Declaration | undefined | null
+) => {
   return libDomFileNameRegex.test(declaration?.getSourceFile().fileName);
 };
 
 const isWindowLocationType = (type: Type) => {
   const symbol = type.getSymbol();
-  return symbol.getEscapedName() === "Location" && isTypeDeclarationFromLibDom(symbol.valueDeclaration);
+  return (
+    symbol.getEscapedName() === "Location" &&
+    isTypeDeclarationFromLibDom(symbol.valueDeclaration)
+  );
 };
 
 export default ESLintUtils.RuleCreator(
@@ -56,38 +61,38 @@ export default ESLintUtils.RuleCreator(
     schema: [],
   },
   defaultOptions: [],
-  create: function(context) {
+  create: function (context) {
     return {
       /** Matches `*.href = *;` */
-      "AssignmentExpression[operator='='][left.type='MemberExpression'][left.property.name='href']": (
-        assignExp: TSESTree.AssignmentExpression
-      ) => {
-        const leftExp = assignExp.left as TSESTree.MemberExpression;
-        const parserServices = ESLintUtils.getParserServices(context);
-        const parentObject = getParentObjectOfMemberExpression(leftExp);
+      "AssignmentExpression[operator='='][left.type='MemberExpression'][left.property.name='href']":
+        (assignExp: TSESTree.AssignmentExpression) => {
+          const leftExp = assignExp.left as TSESTree.MemberExpression;
+          const parserServices = ESLintUtils.getParserServices(context);
+          const parentObject = getParentObjectOfMemberExpression(leftExp);
 
-        if (parentObject) {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(parentObject);
-          const typeChecker = parserServices.program.getTypeChecker();
-          const type = typeChecker.getTypeAtLocation(tsNode);
+          if (parentObject) {
+            const tsNode =
+              parserServices.esTreeNodeToTSNodeMap.get(parentObject);
+            const typeChecker = parserServices.program.getTypeChecker();
+            const type = typeChecker.getTypeAtLocation(tsNode);
 
-          if (isWindowLocationType(type)) {
-            context.report({
-              node: assignExp,
-              messageId: "avoidHref",
-              fix: function(fixer) {
-                return [
-                  fixer.replaceTextRange(
-                    [leftExp.property.range[0], assignExp.right.range[0]],
-                    "assign("
-                  ),
-                  fixer.insertTextAfter(assignExp.right, ")"),
-                ];
-              },
-            });
+            if (isWindowLocationType(type)) {
+              context.report({
+                node: assignExp,
+                messageId: "avoidHref",
+                fix: function (fixer) {
+                  return [
+                    fixer.replaceTextRange(
+                      [leftExp.property.range[0], assignExp.right.range[0]],
+                      "assign("
+                    ),
+                    fixer.insertTextAfter(assignExp.right, ")"),
+                  ];
+                },
+              });
+            }
           }
-        }
-      },
+        },
     };
   },
 });

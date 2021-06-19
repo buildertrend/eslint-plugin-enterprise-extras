@@ -25,12 +25,13 @@
   },
   "scripts": {
     "clean": "rimraf dist/",
+    "prettier": "prettier --ignore-unknown --write \"./**/*\" \"tests/**/*\"",
     "prettier:check": "prettier --ignore-unknown --check \"./**/*\" \"tests/**/*\"",
     "prebuild": "npm run clean",
     "build": "tsc",
     "postbuild": "npm run test:ci",
     "test": "jest --watch",
-    "test:ci": "jest && npm run prettier-check",
+    "test:ci": "npm run prettier:check && jest",
     "prepublishOnly": "npm run build"
   },
   "directories": {

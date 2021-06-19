@@ -52,7 +52,7 @@ export default ESLintUtils.RuleCreator(
     schema: [],
   },
   defaultOptions: [],
-  create: function(context) {
+  create: function (context) {
     return {
       "ClassDeclaration[superClass.property.name=/PureComponent|Component/]": (
         classDecl: TSESTree.ClassDeclaration

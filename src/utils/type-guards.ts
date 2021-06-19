@@ -24,11 +24,14 @@ export const isMethod = (
   );
 };
 
-export const isIdentifier = (node: TSESTree.Expression): node is TSESTree.Identifier => {
+export const isIdentifier = (
+  node: TSESTree.Expression
+): node is TSESTree.Identifier => {
   return node.type === "Identifier";
-}
+};
 
-export const isAsExpression = (node: TSESTree.Expression): node is TSESTree.TSAsExpression => {
+export const isAsExpression = (
+  node: TSESTree.Expression
+): node is TSESTree.TSAsExpression => {
   return node.type === "TSAsExpression";
-}
-
+};

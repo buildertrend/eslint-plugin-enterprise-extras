@@ -25,7 +25,7 @@ ruleTester.run("no-href-assignment", rule, {
                 tst.href = "test";
             }
         }
-    `    
+    `,
   ],
   invalid: [
     {
