@@ -25,7 +25,7 @@
   },
   "scripts": {
     "clean": "rimraf dist/",
-    "prettier:check": "prettier --check package.json jest.config.js tsconfig.json \"src/**/*\" \"tests/**/*\"",
+    "prettier:check": "prettier --ignore-unknown --check \"./**/*\" \"tests/**/*\"",
     "prebuild": "npm run clean",
     "build": "tsc",
     "postbuild": "npm run test:ci",
