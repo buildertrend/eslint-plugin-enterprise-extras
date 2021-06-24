@@ -27,7 +27,7 @@ export default ESLintUtils.RuleCreator(
     schema: [],
   },
   defaultOptions: [],
-  create: function(context) {
+  create: function (context) {
     const reportError = (callExpression: TSESTree.CallExpression) => {
       let expression: TSESTree.Expression = callExpression.callee;
 

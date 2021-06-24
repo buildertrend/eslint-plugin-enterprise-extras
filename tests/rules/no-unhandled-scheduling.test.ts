@@ -62,8 +62,8 @@ ruleTester.run("no-unhandled-scheduling", rule, {
           messageId: "noUnhandledScheduling",
           data: {
             scheduleFunc: "setTimeout",
-            scheduleClearFunc: "clearTimeout"
-          }
+            scheduleClearFunc: "clearTimeout",
+          },
         },
       ],
     },
@@ -76,8 +76,8 @@ ruleTester.run("no-unhandled-scheduling", rule, {
           messageId: "noUnhandledScheduling",
           data: {
             scheduleFunc: "setInterval",
-            scheduleClearFunc: "clearInterval"
-          }
+            scheduleClearFunc: "clearInterval",
+          },
         },
       ],
     },
@@ -92,8 +92,8 @@ ruleTester.run("no-unhandled-scheduling", rule, {
           messageId: "noUnhandledScheduling",
           data: {
             scheduleFunc: "setTimeout",
-            scheduleClearFunc: "clearTimeout"
-          }
+            scheduleClearFunc: "clearTimeout",
+          },
         },
       ],
     },
@@ -108,8 +108,8 @@ ruleTester.run("no-unhandled-scheduling", rule, {
           messageId: "noUnhandledScheduling",
           data: {
             scheduleFunc: "setInterval",
-            scheduleClearFunc: "clearInterval"
-          }
+            scheduleClearFunc: "clearInterval",
+          },
         },
       ],
     },
@@ -122,8 +122,8 @@ ruleTester.run("no-unhandled-scheduling", rule, {
           messageId: "noUnhandledScheduling",
           data: {
             scheduleFunc: "setTimeout",
-            scheduleClearFunc: "clearTimeout"
-          }
+            scheduleClearFunc: "clearTimeout",
+          },
         },
       ],
     },
@@ -136,8 +136,8 @@ ruleTester.run("no-unhandled-scheduling", rule, {
           messageId: "noUnhandledScheduling",
           data: {
             scheduleFunc: "setInterval",
-            scheduleClearFunc: "clearInterval"
-          }
+            scheduleClearFunc: "clearInterval",
+          },
         },
       ],
     },

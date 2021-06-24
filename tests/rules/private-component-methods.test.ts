@@ -61,80 +61,85 @@ ruleTester.run("private-component-methods", rule, {
         class TestComponent extends React.Component {
           private prop;
         }
-    `
+    `,
   ],
 
-  invalid: [{
-    code: `
+  invalid: [
+    {
+      code: `
         class TestComponent extends React.Component {
             nonPrivateMethod() {}
             render() { return null; }
         }
     `,
-    output: `
+      output: `
         class TestComponent extends React.Component {
             private nonPrivateMethod() {}
             render() { return null; }
         }
     `,
-    errors: [
-      {
-        messageId: "privateMethods",
-      },
-    ],
-  }, {
-    code: `
+      errors: [
+        {
+          messageId: "privateMethods",
+        },
+      ],
+    },
+    {
+      code: `
         class TestComponent extends React.Component {
             nonPrivateMethod = () => {}
             render() { return null; }
         }
     `,
-    output: `
+      output: `
         class TestComponent extends React.Component {
             private nonPrivateMethod = () => {}
             render() { return null; }
         }
     `,
-    errors: [
-      {
-        messageId: "privateMethods",
-      },
-    ],
-  }, {
-    code: `
+      errors: [
+        {
+          messageId: "privateMethods",
+        },
+      ],
+    },
+    {
+      code: `
         class TestComponent extends React.Component {
             nonPrivateMethod = function() {}
             render() { return null; }
         }
     `,
-    output: `
+      output: `
         class TestComponent extends React.Component {
             private nonPrivateMethod = function() {}
             render() { return null; }
         }
     `,
-    errors: [
-      {
-        messageId: "privateMethods",
-      },
-    ],
-  }, {
-    code: `
+      errors: [
+        {
+          messageId: "privateMethods",
+        },
+      ],
+    },
+    {
+      code: `
         class TestComponent extends React.Component {
             get nonPrivateMethod() {}
             render() { return null; }
         }
     `,
-    output: `
+      output: `
         class TestComponent extends React.Component {
             private get nonPrivateMethod() {}
             render() { return null; }
         }
     `,
-    errors: [
-      {
-        messageId: "privateMethods",
-      },
-    ],
-  }],
+      errors: [
+        {
+          messageId: "privateMethods",
+        },
+      ],
+    },
+  ],
 });

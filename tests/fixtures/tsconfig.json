@@ -1,11 +1,11 @@
 {
-    "compilerOptions": {
-      "jsx": "preserve",
-      "target": "es5",
-      "module": "commonjs",
-      "strict": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-    },
-    "include": ["**/*.ts*"],
-  }
+  "compilerOptions": {
+    "jsx": "preserve",
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true
+  },
+  "include": ["**/*.ts*"]
+}
