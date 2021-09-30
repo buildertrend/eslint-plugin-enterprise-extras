@@ -135,10 +135,10 @@ export default ESLintUtils.RuleCreator(
       "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']": popStack,
       "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='addEventListener']": pushStack,
       "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='window'][callee.property.name='addEventListener']": pushStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression > BlockStatement > ReturnStatement CallExpression[callee.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression > BlockStatement > ReturnStatement CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression > BlockStatement > ReturnStatement CallExpression[callee.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression > BlockStatement > ReturnStatement CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']": popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']": popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
       "VariableDeclarator[id.name=/^[A-Z].+/]:exit": () => reportStack("hook"),
       "ClassDeclaration:exit": () => reportStack("classComponent")
     };
