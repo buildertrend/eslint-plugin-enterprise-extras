@@ -10,28 +10,28 @@ interface ISubscriptionStack {
 }
 
 export default ESLintUtils.RuleCreator(
-  name =>
+  (name) =>
     `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
 )<Options, MessageIds>({
   name: "unregister-events",
   meta: {
-    type: "suggestion",
+    type: "problem",
     docs: {
-      category: "Best Practices",
-      recommended: "warn",
+      category: "Possible Errors",
+      recommended: "error",
       description:
-        "When using Javascript scheduling (`setTimeout` or `setInterval`), it is recommended to support cancelling of the task, especially within React components."
+        "After registering event listeners in React components, event handlers should be unregistered when the component is unmounted.",
     },
     messages: {
       unregisterEventsInClass:
-        "All add event listener calls must have a corresponding unregister event call in componentWillUnmount",
+        "`addEventListener` calls must have a corresponding unregister event call in `componentWillUnmount`",
       unregisterEventsInHook:
-        "All add event listener calls must have a corresponding unregister event call in a useEffect cleanup function"
+        "`addEventListener` calls must have a corresponding unregister event call in a `useEffect` cleanup function",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
-  create: function(context) {
+  create: function (context) {
     let stack: ISubscriptionStack[] = [];
 
     const isSameSubscription = (
@@ -61,13 +61,13 @@ export default ESLintUtils.RuleCreator(
     };
 
     const reportStack = (componentType: "hook" | "classComponent") => {
-      stack.forEach(error => {
+      stack.forEach((error) => {
         context.report({
           node: error.callExpression,
           messageId:
             componentType === "classComponent"
               ? "unregisterEventsInClass"
-              : "unregisterEventsInHook"
+              : "unregisterEventsInHook",
         });
       });
 
@@ -90,7 +90,7 @@ export default ESLintUtils.RuleCreator(
           const subscription = {
             eventName: eventType.value,
             eventHandler: handler,
-            callExpression: callExpression
+            callExpression: callExpression,
           };
           stack.push(subscription);
         }
@@ -114,10 +114,10 @@ export default ESLintUtils.RuleCreator(
           const subscription: ISubscriptionStack = {
             callExpression: callExpression,
             eventName: eventName,
-            eventHandler: handler
+            eventHandler: handler,
           };
 
-          stack = stack.filter(existingSubscription => {
+          stack = stack.filter((existingSubscription) => {
             return !isSameSubscription(subscription, existingSubscription);
           });
         }
@@ -125,22 +125,58 @@ export default ESLintUtils.RuleCreator(
     };
 
     return {
+      // Clear the stack between files to avoid memory links
       Program: clearStack,
       "Program:exit": clearStack,
-      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] CallExpression[callee.name='addEventListener']": pushStack,
-      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] CallExpression[callee.object.name='window'][callee.property.name='addEventListener']": pushStack,
-      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] MethodDefinition[key.name='componentWillUnmount'] CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
-      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] MethodDefinition[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']": popStack,
-      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
-      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='addEventListener']": pushStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='window'][callee.property.name='addEventListener']": pushStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']": popStack,
-      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name='window'][callee.property.name='removeEventListener']": popStack,
+
+      // Add event listener registrations made in class components to the stack
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] CallExpression[callee.name='addEventListener']":
+        pushStack,
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] CallExpression[callee.object.name=/window|document/][callee.property.name='addEventListener']":
+        pushStack,
+
+      // Remove event listeners from the stack in class component componentWillUnmount methods
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] MethodDefinition[key.name='componentWillUnmount'] CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        popStack,
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] MethodDefinition[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']":
+        popStack,
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        popStack,
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']":
+        popStack,
+
+      // Add event listener registrations made in hook components to the stack
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='addEventListener']":
+        pushStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name=/window|document/][callee.property.name='addEventListener']":
+        pushStack,
+      "FunctionDeclaration[id.name=/^[A-Z].+/] CallExpression[callee.name='addEventListener']":
+        pushStack,
+      "FunctionDeclaration[id.name=/^[A-Z].+/] CallExpression[callee.object.name=/window|document/][callee.property.name='addEventListener']":
+        pushStack,
+
+      // Remove event listeners from the stack in hook component useEffect cleanups
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']":
+        popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']":
+        popStack,
+      "VariableDeclarator[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        popStack,
+      "FunctionDeclaration[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']":
+        popStack,
+      "FunctionDeclaration[id.name=/^[A-Z].+/] CallExpression[callee.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        popStack,
+      "FunctionDeclaration[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.name='removeEventListener']":
+        popStack,
+      "FunctionDeclaration[id.name=/^[A-Z].+/] CallExpression[callee.object.name='React'][callee.property.name='useEffect'] > ArrowFunctionExpression ReturnStatement CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        popStack,
+
+      // Report any event listeners not unregistered and still in the stack when leaving a class component/hook
       "VariableDeclarator[id.name=/^[A-Z].+/]:exit": () => reportStack("hook"),
-      "ClassDeclaration:exit": () => reportStack("classComponent")
+      "FunctionDeclaration[id.name=/^[A-Z].+/]:exit": () => reportStack("hook"),
+      "ClassDeclaration:exit": () => reportStack("classComponent"),
     };
-  }
+  },
 });
