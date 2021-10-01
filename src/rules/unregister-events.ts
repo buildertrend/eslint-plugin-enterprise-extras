@@ -125,7 +125,7 @@ export default ESLintUtils.RuleCreator(
     };
 
     return {
-      // Clear the stack between files to avoid memory links
+      // Clear the stack between files to avoid memory leaks
       Program: clearStack,
       "Program:exit": clearStack,
 
