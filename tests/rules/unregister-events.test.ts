@@ -145,6 +145,21 @@ ruleTester.run("unregister-events", rule, {
       }
     `,
     `
+      const MyComponent: React.FC = () => {
+        useEffect(() => {
+          const handler = () => {};
+
+          document.addEventListener("scroll", handler);
+
+          return () => {
+            document.removeEventListener("scroll", handler);
+          }
+        })
+
+        return null;
+      }
+    `,
+    `
       function MyComponent() {
         useEffect(() => {
           const handler = () => {};
@@ -420,6 +435,24 @@ ruleTester.run("unregister-events", rule, {
         {
           messageId: "unregisterEventsInHook",
         },
+        {
+          messageId: "unregisterEventsInHook",
+        },
+      ],
+    },
+    {
+      code: `
+        const MyComponent: React.FC = () => {
+          useEffect(() => {
+            const handler = () => {};
+
+            document.addEventListener("scroll", handler);
+          })
+
+          return null;
+        }
+      `,
+      errors: [
         {
           messageId: "unregisterEventsInHook",
         },
