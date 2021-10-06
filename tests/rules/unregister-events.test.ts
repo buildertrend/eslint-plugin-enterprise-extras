@@ -8,6 +8,9 @@ const ruleTester = new ESLintUtils.RuleTester({
     ecmaVersion: 2018,
     tsconfigRootDir: join(__dirname, "../fixtures"),
     project: "./tsconfig.json",
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
 });
 
@@ -206,6 +209,32 @@ ruleTester.run("unregister-events", rule, {
         })
 
         return null;
+      }
+    `,
+    `
+      const MyComponent: React.FC = () => {
+        useEffect(() => {
+          return () => {
+            removeEventListener("scroll", handler);
+          }
+        })
+
+        return <div onClick={() => addEventListener("scroll", handler)} />;
+      }
+    `,
+    `
+      class MyComponent extends React.Component {
+        private handler = () => {
+
+        };
+
+        componentWillUnmount() {
+          window.removeEventListener("scroll", handler);
+        }
+
+        render() {
+          return <div onClick={() => addEventListener("scroll", handler)} />;
+        }
       }
     `,
   ],
