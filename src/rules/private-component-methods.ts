@@ -65,12 +65,13 @@ export default ESLintUtils.RuleCreator(
               !isLifecycleMethod(classEl)
             );
           })
-          .forEach((b: TSESTree.PropertyDefinition | TSESTree.MethodDefinition) =>
-            context.report({
-              node: b.key,
-              messageId: "privateMethods",
-              fix: (fixer) => fixer.insertTextBefore(b, "private "),
-            })
+          .forEach(
+            (b: TSESTree.PropertyDefinition | TSESTree.MethodDefinition) =>
+              context.report({
+                node: b.key,
+                messageId: "privateMethods",
+                fix: (fixer) => fixer.insertTextBefore(b, "private "),
+              })
           );
       },
     };

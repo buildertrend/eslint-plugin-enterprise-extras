@@ -28,7 +28,8 @@ export default ESLintUtils.RuleCreator(
   defaultOptions: [],
   create: function (context) {
     const reportError = (callExpression: TSESTree.CallExpression) => {
-      let expression: TSESTree.Expression | TSESTree.PrivateIdentifier = callExpression.callee;
+      let expression: TSESTree.Expression | TSESTree.PrivateIdentifier =
+        callExpression.callee;
 
       // Drill down expression if on global/window objects
       if (expression.type === "MemberExpression") {

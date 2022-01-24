@@ -14,7 +14,11 @@ type Options = [];
  */
 const getParentObjectOfMemberExpression = (
   memberExp: TSESTree.MemberExpression
-): TSESTree.Expression | TSESTree.Identifier | TSESTree.PrivateIdentifier | undefined => {
+):
+  | TSESTree.Expression
+  | TSESTree.Identifier
+  | TSESTree.PrivateIdentifier
+  | undefined => {
   const memberExpObj = memberExp.object;
 
   if (memberExpObj.type === "MemberExpression") {

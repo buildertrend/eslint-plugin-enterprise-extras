@@ -3,7 +3,7 @@ import { TSESTree } from "@typescript-eslint/utils";
 export const isPropertyDefinition = (
   node: TSESTree.Node
 ): node is TSESTree.PropertyDefinition => {
-  return (node.type === "PropertyDefinition");
+  return node.type === "PropertyDefinition";
 };
 
 export const isMethodDefinition = (
