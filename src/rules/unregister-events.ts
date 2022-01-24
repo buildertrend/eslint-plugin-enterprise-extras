@@ -1,4 +1,4 @@
-import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
 
 type MessageIds = "unregisterEventsInClass" | "unregisterEventsInHook";
 type Options = [];
@@ -17,7 +17,6 @@ export default ESLintUtils.RuleCreator(
   meta: {
     type: "problem",
     docs: {
-      category: "Possible Errors",
       recommended: "error",
       description:
         "After registering event listeners in React components, event handlers should be unregistered when the component is unmounted.",
@@ -150,6 +149,10 @@ export default ESLintUtils.RuleCreator(
       "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
         pushRemoveSubscription,
       "ClassDeclaration[superClass.property.name=/Component|PureComponent/] ClassProperty[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']":
+        pushRemoveSubscription,
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] PropertyDefinition[key.name='componentWillUnmount'] CallExpression[callee.object.name=/window|document/][callee.property.name='removeEventListener']":
+        pushRemoveSubscription,
+      "ClassDeclaration[superClass.property.name=/Component|PureComponent/] PropertyDefinition[key.name='componentWillUnmount'] CallExpression[callee.name='removeEventListener']":
         pushRemoveSubscription,
 
       // Track event listener registrations made in hook components

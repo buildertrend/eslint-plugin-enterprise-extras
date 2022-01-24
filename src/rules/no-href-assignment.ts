@@ -1,4 +1,4 @@
-import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
 import { Declaration, Type } from "typescript";
 
 type MessageIds = "avoidHref";
@@ -14,7 +14,11 @@ type Options = [];
  */
 const getParentObjectOfMemberExpression = (
   memberExp: TSESTree.MemberExpression
-): TSESTree.Expression | TSESTree.Identifier | undefined => {
+):
+  | TSESTree.Expression
+  | TSESTree.Identifier
+  | TSESTree.PrivateIdentifier
+  | undefined => {
   const memberExpObj = memberExp.object;
 
   if (memberExpObj.type === "MemberExpression") {
@@ -50,7 +54,6 @@ export default ESLintUtils.RuleCreator(
     type: "suggestion",
     fixable: "code",
     docs: {
-      category: "Best Practices",
       recommended: "error",
       description: "Prefer using location.assign() to make testing easier",
     },
