@@ -1,4 +1,4 @@
-import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
 import { isMethod } from "../utils/type-guards";
 
 type MessageIds = "privateMethods";
@@ -23,7 +23,7 @@ const reactLifecycleMethods = new Set([
 ]);
 
 const isLifecycleMethod = (
-  method: TSESTree.ClassProperty | TSESTree.MethodDefinition
+  method: TSESTree.PropertyDefinition | TSESTree.MethodDefinition
 ) => {
   return (
     method.key.type === "Identifier" &&
@@ -40,7 +40,6 @@ export default ESLintUtils.RuleCreator(
     type: "suggestion",
     fixable: "code",
     docs: {
-      category: "Best Practices",
       recommended: "error",
       description:
         "Non-lifecycle methods for React class components should be private to help find unused handlers",
@@ -66,7 +65,7 @@ export default ESLintUtils.RuleCreator(
               !isLifecycleMethod(classEl)
             );
           })
-          .forEach((b: TSESTree.ClassProperty | TSESTree.MethodDefinition) =>
+          .forEach((b: TSESTree.PropertyDefinition | TSESTree.MethodDefinition) =>
             context.report({
               node: b.key,
               messageId: "privateMethods",

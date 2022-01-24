@@ -1,4 +1,4 @@
-import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
 import { isAsExpression, isIdentifier } from "../utils/type-guards";
 
 type MessageIds = "noUnhandledScheduling";
@@ -15,7 +15,6 @@ export default ESLintUtils.RuleCreator(
   meta: {
     type: "suggestion",
     docs: {
-      category: "Best Practices",
       recommended: "warn",
       description:
         "When using Javascript scheduling (`setTimeout` or `setInterval`), it is recommended to support cancelling of the task, especially within React components.",
@@ -29,7 +28,7 @@ export default ESLintUtils.RuleCreator(
   defaultOptions: [],
   create: function (context) {
     const reportError = (callExpression: TSESTree.CallExpression) => {
-      let expression: TSESTree.Expression = callExpression.callee;
+      let expression: TSESTree.Expression | TSESTree.PrivateIdentifier = callExpression.callee;
 
       // Drill down expression if on global/window objects
       if (expression.type === "MemberExpression") {
