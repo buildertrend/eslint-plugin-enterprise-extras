@@ -1,7 +1,8 @@
-import { ESLintUtils, TSESTree } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
+
 import {
   isAssignmentExpression,
-  isClassProperty,
+  isPropertyDefinition,
   isExpressionStatement,
   isIdentifier,
   isMemberExpression,
@@ -22,7 +23,6 @@ export default ESLintUtils.RuleCreator(
   meta: {
     type: "problem",
     docs: {
-      category: "Best Practices",
       recommended: "warn",
       description:
         "For class components that use state, a state property should be defined before mount. Also ensures that state properties are NOT defined if no state type was provided as a type argument to React.Component or React.PureComponent.",
@@ -38,7 +38,7 @@ export default ESLintUtils.RuleCreator(
   defaultOptions: [],
   create: function (context) {
     const isStatePropertyDefinition = (node: TSESTree.ClassElement) => {
-      if (isClassProperty(node)) {
+      if (isPropertyDefinition(node)) {
         if (isIdentifier(node.key)) {
           const id = node.key;
           return id.name === "state";

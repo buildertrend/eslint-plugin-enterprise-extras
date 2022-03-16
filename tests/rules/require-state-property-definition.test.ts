@@ -1,5 +1,5 @@
 import rule from "../../src/rules/require-state-property-definition";
-import { ESLintUtils } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils } from "@typescript-eslint/utils";
 import { resolve, join } from "path";
 
 const ruleTester = new ESLintUtils.RuleTester({

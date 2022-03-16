@@ -2,11 +2,11 @@ import { TSESTree } from "@typescript-eslint/utils";
 
 export const isPropertyDefinition = (
   node: TSESTree.Node
-): node is TSESTree.ClassProperty => {
+): node is TSESTree.PropertyDefinition => {
   return (
     // Will need to switch "any" when the typescript-eslint is updated
     // This conditional is needed to work with v4 and v5 versions of typescript-eslint
-    node.type === "ClassProperty" || (node.type as any) === "PropertyDefinition"
+    (node.type as any) === "ClassProperty" || node.type === "PropertyDefinition"
   );
 };
 
