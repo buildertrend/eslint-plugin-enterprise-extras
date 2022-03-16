@@ -1,6 +1,6 @@
-import { TSESTree } from "@typescript-eslint/experimental-utils";
+import { TSESTree } from "@typescript-eslint/utils";
 
-export const isClassProperty = (
+export const isPropertyDefinition = (
   node: TSESTree.Node
 ): node is TSESTree.ClassProperty => {
   return (
@@ -19,9 +19,9 @@ export const isMethodDefinition = (
 const funcExpRegex = /^(Arrow)?FunctionExpression$/;
 export const isMethod = (
   node: TSESTree.ClassElement
-): node is TSESTree.ClassProperty | TSESTree.MethodDefinition => {
+): node is TSESTree.PropertyDefinition | TSESTree.MethodDefinition => {
   return (
-    (isClassProperty(node) &&
+    (isPropertyDefinition(node) &&
       node.value &&
       funcExpRegex.test(node.value.type)) ||
     isMethodDefinition(node)
@@ -53,7 +53,7 @@ export const isAssignmentExpression = (
 };
 
 export const isIdentifier = (
-  node: TSESTree.Expression
+  node: TSESTree.Expression | TSESTree.PrivateIdentifier
 ): node is TSESTree.Identifier => {
   return node.type === "Identifier";
 };

@@ -1,5 +1,5 @@
 import rule from "../../src/rules/unregister-events";
-import { ESLintUtils } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils } from "@typescript-eslint/utils";
 import { resolve, join } from "path";
 
 const ruleTester = new ESLintUtils.RuleTester({
@@ -8,6 +8,9 @@ const ruleTester = new ESLintUtils.RuleTester({
     ecmaVersion: 2018,
     tsconfigRootDir: join(__dirname, "../fixtures"),
     project: "./tsconfig.json",
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
 });
 
@@ -26,11 +29,11 @@ ruleTester.run("unregister-events", rule, {
         };
 
         componentDidMount() {
-          window.addEventListener("scroll", handler);
+          window.addEventListener("scroll", this.handler);
         }
 
         componentWillUnmount() {
-          window.removeEventListener("scroll", handler);
+          window.removeEventListener("scroll", this.handler);
         }
 
         render() {
@@ -45,11 +48,11 @@ ruleTester.run("unregister-events", rule, {
         };
 
         componentDidMount() {
-          window.addEventListener("scroll", handler);
+          window.addEventListener("scroll", this.handler);
         }
 
         componentWillUnmount() {
-          removeEventListener("scroll", handler);
+          removeEventListener("scroll", this.handler);
         }
 
         render() {
@@ -64,11 +67,11 @@ ruleTester.run("unregister-events", rule, {
         };
 
         componentDidMount = () => {
-          window.addEventListener("scroll", handler);
+          window.addEventListener("scroll", this.handler);
         }
 
         componentWillUnmount = () => {
-          window.removeEventListener("scroll", handler);
+          window.removeEventListener("scroll", this.handler);
         }
 
         render() {
@@ -83,11 +86,11 @@ ruleTester.run("unregister-events", rule, {
         };
 
         componentDidMount() {
-          window.addEventListener("scroll", handler);
+          window.addEventListener("scroll", this.handler);
         }
 
         componentWillUnmount() {
-          window.removeEventListener("scroll", handler);
+          window.removeEventListener("scroll", this.handler);
         }
 
         render() {
@@ -102,11 +105,11 @@ ruleTester.run("unregister-events", rule, {
         };
 
         componentDidMount() {
-          addEventListener("scroll", handler);
+          addEventListener("scroll", this.handler);
         }
 
         componentWillUnmount() {
-          removeEventListener("scroll", handler);
+          removeEventListener("scroll", this.handler);
         }
 
         render() {
@@ -208,6 +211,32 @@ ruleTester.run("unregister-events", rule, {
         return null;
       }
     `,
+    `
+      const MyComponent: React.FC = () => {
+        useEffect(() => {
+          return () => {
+            removeEventListener("scroll", handler);
+          }
+        })
+
+        return <div onClick={() => addEventListener("scroll", handler)} />;
+      }
+    `,
+    `
+      class MyComponent extends React.Component {
+        private handler = () => {
+
+        };
+
+        componentWillUnmount() {
+          window.removeEventListener("scroll", this.handler);
+        }
+
+        render() {
+          return <div onClick={() => addEventListener("scroll", this.handler)} />;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -218,7 +247,7 @@ ruleTester.run("unregister-events", rule, {
           };
 
           componentDidMount() {
-            window.addEventListener("scroll", handler);
+            window.addEventListener("scroll", this.handler);
           }
 
           render() {
@@ -240,7 +269,7 @@ ruleTester.run("unregister-events", rule, {
           };
 
           componentDidMount = () => {
-            window.addEventListener("scroll", handler);
+            window.addEventListener("scroll", this.handler);
           }
 
           render() {
@@ -262,11 +291,11 @@ ruleTester.run("unregister-events", rule, {
           };
 
           componentDidMount() {
-            window.addEventListener("scroll", handler);
+            window.addEventListener("scroll", this.handler);
           }
 
           componentWillUnmount() {
-            // window.removeEventListener("scroll", handler);
+            // window.removeEventListener("scroll", this.handler);
           }
 
           render() {
