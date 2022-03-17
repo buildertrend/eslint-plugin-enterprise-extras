@@ -2,6 +2,7 @@ import noHrefAssignment from "./rules/no-href-assignment";
 import noUnhandledScheduling from "./rules/no-unhandled-scheduling";
 import privateComponentMethods from "./rules/private-component-methods";
 import unregisterEvents from "./rules/unregister-events";
+import requireTypography from "./rules/require-typography";
 
 export = {
   rules: {
@@ -9,6 +10,7 @@ export = {
     "private-component-methods": privateComponentMethods,
     "no-unhandled-scheduling": noUnhandledScheduling,
     "unregister-events": unregisterEvents,
+    "require-typography": requireTypography,
   },
   configs: {
     recommended: {
@@ -18,6 +20,7 @@ export = {
         "enterprise-extras/private-component-methods": "error",
         "enterprise-extras/no-unhandled-scheduling": "warn",
         "enterprise-extras/unregister-events": "error",
+        "enterprise-extras/require-typography": "error",
       },
     },
     all: {
@@ -27,6 +30,7 @@ export = {
         "enterprise-extras/private-component-methods": "error",
         "enterprise-extras/no-unhandled-scheduling": "error",
         "enterprise-extras/unregister-events": "error",
+        "enterprise-extras/require-typography": "error",
       },
     },
   },
