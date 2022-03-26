@@ -49,7 +49,7 @@ module.exports = {
 | [private-component-methods](/docs/private-component-methods.md)  | ✅ | 🔧 | Requires that all methods of react components are private (except reserved lifecycle methods) |
 | [no-unhandled-scheduling](/docs/no-unhandled-scheduling.md)  | ✅ |  | `setTimeout` and `setInterval` calls should be cleared |
 | [unregister-events](/docs/unregister-events.md)  | ✅ |  | Ensures all events registered in React components are unregistered when component unmounts |
-
+| [require-state-property-definition](/docs/require-state-property-definition.md)  | ✅ |  | Check for expected/unexpected state definitions in class components |
 ## LICENSE
 
 MIT

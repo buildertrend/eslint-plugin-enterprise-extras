@@ -34,12 +34,14 @@ const libDomFileNameRegex = /typescript.+lib.+lib\.dom\.d\.ts/;
 const isTypeDeclarationFromLibDom = (
   declaration: Declaration | undefined | null
 ) => {
-  return libDomFileNameRegex.test(declaration?.getSourceFile().fileName);
+  const fileName = declaration?.getSourceFile()?.fileName;
+  return fileName && libDomFileNameRegex.test(fileName);
 };
 
 const isWindowLocationType = (type: Type) => {
   const symbol = type.getSymbol();
   return (
+    symbol &&
     symbol.getEscapedName() === "Location" &&
     isTypeDeclarationFromLibDom(symbol.valueDeclaration)
   );
