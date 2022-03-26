@@ -17,7 +17,7 @@ export default ESLintUtils.RuleCreator(
   (name) =>
     `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
 )<Options, MessageIds>({
-  name: "prevent-unstable-dependencies",
+  name: "no-unstable-dependencies",
   meta: {
     type: "suggestion",
     fixable: "code",
