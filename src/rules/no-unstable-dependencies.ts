@@ -53,19 +53,21 @@ export default ESLintUtils.RuleCreator(
                   depReferenceDefinitions &&
                   depReferenceDefinitions.length > 0
                 ) {
-                  const writeReferences = depReference.resolved.references
+                  const writeReferences = depReference.resolved?.references
                     .filter((ref) => ref.isWrite() && ref.writeExpr)
                     .map((ref) => ref.writeExpr);
 
                   // If every known write expression is unstable, then we know that the variable is not save to use as a react hook dependency
                   if (
+                    writeReferences &&
+                    writeReferences.length > 0 &&
                     writeReferences.every((writeReference) =>
-                      isUnstableExpression(writeReference)
+                      isUnstableExpression(writeReference!)
                     )
                   ) {
                     writeReferences.forEach((writeReference) => {
                       context.report({
-                        node: writeReference,
+                        node: writeReference!,
                         messageId: "unstableDependency",
                       });
                     });
