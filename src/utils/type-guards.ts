@@ -52,6 +52,15 @@ export const isAssignmentExpression = (
   return node.type === "AssignmentExpression";
 };
 
+export const isFunctionDeclaration = (
+  node: TSESTree.Node
+): node is TSESTree.ArrowFunctionExpression | TSESTree.FunctionDeclaration => {
+  return (
+    node.type === "ArrowFunctionExpression" ||
+    node.type === "FunctionDeclaration"
+  );
+};
+
 export const isIdentifier = (
   node: TSESTree.Expression | TSESTree.PrivateIdentifier
 ): node is TSESTree.Identifier => {
@@ -62,4 +71,50 @@ export const isAsExpression = (
   node: TSESTree.Expression
 ): node is TSESTree.TSAsExpression => {
   return node.type === "TSAsExpression";
+};
+
+const setOfUnstableAssignmentTypes = new Set([
+  "NewExpression",
+  "ObjectExpression",
+  "ArrayExpression",
+  "ArrowFunctionExpression",
+  "FunctionExpression",
+  "JSXElement",
+  "JSXFragment",
+]);
+type UnstableExpression =
+  | TSESTree.NewExpression
+  | TSESTree.ObjectExpression
+  | TSESTree.ArrayExpression
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression
+  | TSESTree.JSXElement
+  | TSESTree.JSXFragment;
+export const isUnstableExpression = (
+  node: TSESTree.Node
+): node is UnstableExpression => {
+  return setOfUnstableAssignmentTypes.has(node.type);
+};
+
+export const isAssignmentPattern = (
+  node: TSESTree.Node
+): node is TSESTree.AssignmentPattern => {
+  return node.type === "AssignmentPattern";
+};
+
+export const isVariableDeclarator = (
+  node: TSESTree.Node
+): node is TSESTree.VariableDeclarator => {
+  return node.type === "VariableDeclarator";
+};
+
+export const isUnstableAssignment = (node: TSESTree.Node) => {
+  let expression: null | TSESTree.Expression = null;
+  if (isAssignmentPattern(node)) {
+    expression = node.right;
+  } else if (isVariableDeclarator(node)) {
+    expression = node.init;
+  }
+
+  return expression && isUnstableExpression(expression);
 };

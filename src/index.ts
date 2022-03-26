@@ -4,6 +4,7 @@ import privateComponentMethods from "./rules/private-component-methods";
 import requireStatePropertyDefinition from "./rules/require-state-property-definition";
 import unregisterEvents from "./rules/unregister-events";
 import requireTypography from "./rules/require-typography";
+import noUnstableDependencies from "./rules/no-unstable-dependencies";
 
 export = {
   rules: {
@@ -13,6 +14,7 @@ export = {
     "unregister-events": unregisterEvents,
     "require-typography": requireTypography,
     "require-state-property-definition": requireStatePropertyDefinition,
+    "no-unstable-dependencies": noUnstableDependencies,
   },
   configs: {
     recommended: {
@@ -24,6 +26,7 @@ export = {
         "enterprise-extras/unregister-events": "error",
         "enterprise-extras/require-typography": "error",
         "enterprise-extras/require-state-property-definition": "warn",
+        "enterprise-extras/no-unstable-dependencies": "warn",
       },
     },
     all: {
@@ -35,6 +38,7 @@ export = {
         "enterprise-extras/unregister-events": "error",
         "enterprise-extras/require-typography": "error",
         "enterprise-extras/require-state-property-definition": "error",
+        "enterprise-extras/no-unstable-dependencies": "error",
       },
     },
   },
