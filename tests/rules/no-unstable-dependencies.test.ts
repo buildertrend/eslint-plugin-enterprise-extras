@@ -26,6 +26,14 @@ ruleTester.run("no-unstable-dependencies", rule, {
         React.useEffect(() => {}, [handler]);
       }
     `,
+    `
+      interface MyProps {
+        handler: object;
+      }
+      const MyComponent: React.FC<MyProps> = ({handler}) => {
+        React.useEffect(() => {}, [handler]);
+      }
+    `,
     `      
       interface MyProps {
         myNum?: number;
