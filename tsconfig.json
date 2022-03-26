@@ -14,7 +14,8 @@
     "sourceMap": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "strictNullChecks": true
   },
   "include": ["./src/**/*.ts"]
 }
