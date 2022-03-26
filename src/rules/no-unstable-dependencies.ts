@@ -24,7 +24,7 @@ export default ESLintUtils.RuleCreator(
     docs: {
       recommended: "error",
       description:
-        "Unstable dependencies should be avoided in React functional component dependency arrays",
+        "Unstable dependencies should be avoided in React hook dependency arrays",
     },
     messages: {
       unstableDependency:
@@ -35,23 +35,13 @@ export default ESLintUtils.RuleCreator(
   defaultOptions: [],
   create: function (context) {
     const reportUnstableDeps = (useHookCall: TSESTree.CallExpression) => {
-      if (useHookCall.arguments[1].type == "ArrayExpression") {
+      if (useHookCall.arguments[1].type === "ArrayExpression") {
         const scope = context.getScope();
 
         useHookCall.arguments[1].elements.forEach((dependency) => {
-          let depIdentifier: undefined | TSESTree.Identifier = undefined;
           if (isIdentifier(dependency)) {
-            depIdentifier = dependency;
-          } else if (
-            isMemberExpression(dependency) &&
-            isIdentifier(dependency.object)
-          ) {
-            depIdentifier = dependency.object;
-          }
-
-          if (depIdentifier) {
             const depReference = scope.references.find(
-              (ref) => ref.identifier === depIdentifier
+              (ref) => ref.identifier === dependency
             );
 
             if (depReference) {
@@ -78,6 +68,10 @@ export default ESLintUtils.RuleCreator(
                         node: writeReference,
                         messageId: "unstableDependency",
                       });
+                    });
+                    context.report({
+                      node: dependency,
+                      messageId: "unstableDependency",
                     });
                   }
                 }

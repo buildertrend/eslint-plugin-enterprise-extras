@@ -57,13 +57,17 @@ const setOfUnstableAssignmentTypes = new Set([
   "ArrayExpression",
   "ArrowFunctionExpression",
   "FunctionExpression",
+  "JSXElement",
+  "JSXFragment",
 ]);
 type UnstableExpression =
   | TSESTree.NewExpression
   | TSESTree.ObjectExpression
   | TSESTree.ArrayExpression
   | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
+  | TSESTree.FunctionExpression
+  | TSESTree.JSXElement
+  | TSESTree.JSXFragment;
 export const isUnstableExpression = (
   node: TSESTree.Node
 ): node is UnstableExpression => {
