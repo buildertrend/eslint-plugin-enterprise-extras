@@ -34,6 +34,7 @@ export default ESLintUtils.RuleCreator(
   },
   defaultOptions: [],
   create: function (context) {
+    const reportedWriteAssignments = new Set<TSESTree.Node>();
     const reportUnstableDeps = (useHookCall: TSESTree.CallExpression) => {
       if (useHookCall.arguments[1].type === "ArrayExpression") {
         const scope = context.getScope();
@@ -66,10 +67,16 @@ export default ESLintUtils.RuleCreator(
                     )
                   ) {
                     writeReferences.forEach((writeReference) => {
-                      context.report({
-                        node: writeReference!,
-                        messageId: "unstableDependency",
-                      });
+                      if (
+                        writeReference &&
+                        !reportedWriteAssignments.has(writeReference)
+                      ) {
+                        reportedWriteAssignments.add(writeReference);
+                        context.report({
+                          node: writeReference!,
+                          messageId: "unstableDependency",
+                        });
+                      }
                     });
                     context.report({
                       node: dependency,
@@ -89,6 +96,7 @@ export default ESLintUtils.RuleCreator(
         reportUnstableDeps,
       [`CallExpression[arguments.length>=2][callee.type="Identifier"][callee.name=/${hooksWithDependenciesRegex}/]`]:
         reportUnstableDeps,
+      Program: () => reportedWriteAssignments.clear(),
     };
   },
 });
