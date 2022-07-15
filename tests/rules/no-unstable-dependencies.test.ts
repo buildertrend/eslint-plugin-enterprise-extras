@@ -210,5 +210,53 @@ ruleTester.run("no-unstable-dependencies", rule, {
         },
       ],
     },
+    {
+      code: `
+        interface MyProps {
+          myArray?: number[];
+        }
+        const MyComponent: React.FC<MyProps> = ({myArray = []}) => {
+          React.useEffect(() => {}, [myArray]);
+          React.useEffect(() => {}, [myArray]);
+        }
+      `,
+      errors: [
+        {
+          messageId: "unstableDependency",
+        },
+        {
+          messageId: "unstableDependency",
+        },
+        {
+          messageId: "unstableDependency",
+        },
+      ],
+    },
+    {
+      code: `
+        interface MyProps {
+          myArray?: number[];
+        }
+        const MyComponent: React.FC<MyProps> = ({myArray = []}) => {
+          myArray = [123];
+          React.useEffect(() => {}, [myArray]);
+          React.useEffect(() => {}, [myArray]);
+        }
+      `,
+      errors: [
+        {
+          messageId: "unstableDependency",
+        },
+        {
+          messageId: "unstableDependency",
+        },
+        {
+          messageId: "unstableDependency",
+        },
+        {
+          messageId: "unstableDependency",
+        },
+      ],
+    },
   ],
 });
