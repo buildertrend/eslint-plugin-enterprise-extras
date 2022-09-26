@@ -1,7 +1,7 @@
 {
   "name": "@buildertrend/eslint-plugin-enterprise-extras",
   "description": "Extra eslint rules for enterprise environments focusing on React and Typescript",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
