@@ -50,6 +50,7 @@ module.exports = {
 | [no-unhandled-scheduling](/docs/no-unhandled-scheduling.md)  | ✅ |  | `setTimeout` and `setInterval` calls should be cleared |
 | [unregister-events](/docs/unregister-events.md)  | ✅ |  | Ensures all events registered in React components are unregistered when component unmounts |
 | [no-unstable-dependencies](/docs/no-unstable-dependencies.md)  | ✅ |  | Helps find dependencies that are used in React hook dependency arrays that will change values every time the component render is called |
+| [require-state-property-definition](/docs/require-state-property-definition.md)  | ✅ |  | Check for expected/unexpected state definitions in class components |
 
 ## LICENSE
 

@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "suppressImplicitAnyIndexErrors": true,
-    "declaration": true
+    "declaration": true,
+    "strictNullChecks": true
   },
   "include": ["./src/**/*.ts"]
 }
