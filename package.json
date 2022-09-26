@@ -1,16 +1,16 @@
 {
   "name": "@buildertrend/eslint-plugin-enterprise-extras",
   "description": "Extra eslint rules for enterprise environments focusing on React and Typescript",
-  "version": "3.0.0",
+  "version": "4.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "/dist"
   ],
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "eslint": "^7.32.0"
+    "@typescript-eslint/eslint-plugin": "5.10.0",
+    "@typescript-eslint/parser": "5.10.0",
+    "eslint": "7.32.0"
   },
   "devDependencies": {
     "@types/node": "14.14.35",
@@ -21,7 +21,9 @@
     "typescript": "4.4.4"
   },
   "peerDependencies": {
-    "eslint": "^7"
+    "eslint": "^7",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5"
   },
   "scripts": {
     "clean": "rimraf dist/",
