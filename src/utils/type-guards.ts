@@ -61,6 +61,10 @@ export const isFunctionDeclaration = (
   );
 };
 
+export const isLiteral = (node: TSESTree.Node): node is TSESTree.Literal => {
+  return node.type === "Literal";
+};
+
 export const isIdentifier = (
   node: TSESTree.Expression | TSESTree.PrivateIdentifier
 ): node is TSESTree.Identifier => {
