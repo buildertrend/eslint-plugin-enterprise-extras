@@ -4,6 +4,7 @@ import privateComponentMethods from "./rules/private-component-methods";
 import requireStatePropertyDefinition from "./rules/require-state-property-definition";
 import unregisterEvents from "./rules/unregister-events";
 import noUnstableDependencies from "./rules/no-unstable-dependencies";
+import maxIndentation from "./rules/max-indentation";
 
 export = {
   rules: {
@@ -13,6 +14,7 @@ export = {
     "unregister-events": unregisterEvents,
     "no-unstable-dependencies": noUnstableDependencies,
     "require-state-property-definition": requireStatePropertyDefinition,
+    "max-indentation": maxIndentation,
   },
   configs: {
     recommended: {
@@ -24,6 +26,7 @@ export = {
         "enterprise-extras/unregister-events": "error",
         "enterprise-extras/no-unstable-dependencies": "warn",
         "enterprise-extras/require-state-property-definition": "warn",
+        "enterprise-extras/max-indentation": "warn",
       },
     },
     all: {
@@ -35,6 +38,7 @@ export = {
         "enterprise-extras/unregister-events": "error",
         "enterprise-extras/no-unstable-dependencies": "error",
         "enterprise-extras/require-state-property-definition": "error",
+        "enterprise-extras/max-indentation": "error",
       },
     },
   },
