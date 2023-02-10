@@ -5,6 +5,7 @@ import requireStatePropertyDefinition from "./rules/require-state-property-defin
 import unregisterEvents from "./rules/unregister-events";
 import noUnstableDependencies from "./rules/no-unstable-dependencies";
 import maxIndentation from "./rules/max-indentation";
+import noDeprecatedElement from "./rules/no-deprecated-element";
 
 export = {
   rules: {
@@ -15,6 +16,7 @@ export = {
     "no-unstable-dependencies": noUnstableDependencies,
     "require-state-property-definition": requireStatePropertyDefinition,
     "max-indentation": maxIndentation,
+    "no-deprecated-element": noDeprecatedElement,
   },
   configs: {
     recommended: {
@@ -27,6 +29,7 @@ export = {
         "enterprise-extras/no-unstable-dependencies": "warn",
         "enterprise-extras/require-state-property-definition": "warn",
         "enterprise-extras/max-indentation": "warn",
+        "enterprise-extras/no-deprecated-element": "warn",
       },
     },
     all: {
@@ -39,6 +42,7 @@ export = {
         "enterprise-extras/no-unstable-dependencies": "error",
         "enterprise-extras/require-state-property-definition": "error",
         "enterprise-extras/max-indentation": "error",
+        "enterprise-extras/no-deprecated-element": "error",
       },
     },
   },

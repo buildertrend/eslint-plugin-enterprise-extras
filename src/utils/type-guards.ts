@@ -122,3 +122,15 @@ export const isUnstableAssignment = (node: TSESTree.Node) => {
 
   return expression && isUnstableExpression(expression);
 };
+
+export const isJsxIdentifier = (
+  node: TSESTree.JSXTagNameExpression | undefined
+): node is TSESTree.JSXIdentifier => {
+  return node?.type === "JSXIdentifier";
+};
+
+export const isJsxMemberExpression = (
+  node: TSESTree.JSXTagNameExpression | undefined
+): node is TSESTree.JSXMemberExpression => {
+  return node?.type === "JSXMemberExpression";
+};
