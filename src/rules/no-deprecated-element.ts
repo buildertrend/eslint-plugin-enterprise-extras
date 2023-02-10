@@ -83,37 +83,39 @@ export default ESLintUtils.RuleCreator(
         const startingIdentifier = jsxElement.openingElement
           .name as TSESTree.JSXIdentifier;
 
-        if (keysToReplace.includes(startingIdentifier.name)) {
-          const replacement = replacementMap[startingIdentifier.name];
-          const messageId = replacement.with
-            ? "noDeprecatedElement_replacement"
-            : "noDeprecatedElement";
-
-          context.report({
-            node: jsxElement,
-            messageId,
-            fix: replacement.with
-              ? function (fixer) {
-                  const fixes = [
-                    fixer.replaceText(startingIdentifier, replacement.with!),
-                  ];
-                  const closingIdentifier = jsxElement.closingElement?.name as
-                    | TSESTree.JSXIdentifier
-                    | undefined;
-                  if (closingIdentifier) {
-                    fixes.push(
-                      fixer.replaceText(closingIdentifier, replacement.with!)
-                    );
-                  }
-
-                  return fixes;
-                }
-              : undefined,
-            data: {
-              ...replacement,
-            },
-          });
+        if (!keysToReplace.includes(startingIdentifier.name)) {
+          return;
         }
+
+        const replacement = replacementMap[startingIdentifier.name];
+        const messageId = replacement.with
+          ? "noDeprecatedElement_replacement"
+          : "noDeprecatedElement";
+
+        context.report({
+          node: startingIdentifier,
+          messageId,
+          fix: replacement.with
+            ? function (fixer) {
+                const fixes = [
+                  fixer.replaceText(startingIdentifier, replacement.with!),
+                ];
+                const closingIdentifier = jsxElement.closingElement?.name as
+                  | TSESTree.JSXIdentifier
+                  | undefined;
+                if (closingIdentifier) {
+                  fixes.push(
+                    fixer.replaceText(closingIdentifier, replacement.with!)
+                  );
+                }
+
+                return fixes;
+              }
+            : undefined,
+          data: {
+            ...replacement,
+          },
+        });
       },
     };
   },
