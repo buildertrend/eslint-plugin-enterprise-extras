@@ -1,5 +1,6 @@
 import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
 import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint";
+import { isJsxIdentifier, isJsxMemberExpression } from "../utils/type-guards";
 
 type MessageIds = "noDeprecatedElement" | "noDeprecatedElement_replacement";
 type Deprecated = {
@@ -28,6 +29,21 @@ const buildDeprecationMap = (
       };
     }, {}) ?? {};
   return replacementMap;
+};
+
+const getJsxIdentifier = (node?: TSESTree.JSXTagNameExpression) => {
+  if (node === undefined) {
+    return undefined;
+  }
+  let returnNode = node;
+  if (isJsxMemberExpression(returnNode)) {
+    returnNode = returnNode.property;
+  }
+
+  if (isJsxIdentifier(returnNode)) {
+    return returnNode;
+  }
+  return undefined;
 };
 
 const messages = {
@@ -77,13 +93,21 @@ export default ESLintUtils.RuleCreator(
   defaultOptions: [{}],
   create: function (context) {
     const deprecationMap = buildDeprecationMap(context);
-    const keysToDeprecate = Object.keys(deprecationMap);
     return {
       JSXElement: (jsxElement: TSESTree.JSXElement) => {
-        const startingIdentifier = jsxElement.openingElement
-          .name as TSESTree.JSXIdentifier;
+        const startingIdentifier = getJsxIdentifier(
+          jsxElement.openingElement.name
+        );
+        const closingIdentifier = getJsxIdentifier(
+          jsxElement.closingElement?.name
+        );
+        // If the start wasn't able to be parsed, stop processing
+        if (startingIdentifier === undefined) {
+          return;
+        }
 
-        if (!keysToDeprecate.includes(startingIdentifier.name)) {
+        // if the identifier isn't on the deprecation list, stop processing
+        if (!(startingIdentifier.name in deprecationMap)) {
           return;
         }
 
@@ -93,10 +117,16 @@ export default ESLintUtils.RuleCreator(
           context.report({
             node: startingIdentifier,
             messageId: "noDeprecatedElement",
-            data: {
-              ...deprecation,
-            },
+            data: deprecation,
           });
+
+          if (closingIdentifier !== undefined) {
+            context.report({
+              node: closingIdentifier,
+              messageId: "noDeprecatedElement",
+              data: deprecation,
+            });
+          }
           return;
         }
 
@@ -104,20 +134,21 @@ export default ESLintUtils.RuleCreator(
           node: startingIdentifier,
           messageId: "noDeprecatedElement_replacement",
           fix: function (fixer) {
-            const fixes = [fixer.replaceText(startingIdentifier, replacement)];
-            const closingIdentifier = jsxElement.closingElement?.name as
-              | TSESTree.JSXIdentifier
-              | undefined;
-            if (closingIdentifier) {
-              fixes.push(fixer.replaceText(closingIdentifier, replacement));
-            }
-
-            return fixes;
+            return [fixer.replaceText(startingIdentifier, replacement)];
           },
-          data: {
-            ...deprecation,
-          },
+          data: deprecation,
         });
+
+        if (closingIdentifier !== undefined) {
+          context.report({
+            node: closingIdentifier,
+            messageId: "noDeprecatedElement_replacement",
+            fix: function (fixer) {
+              return [fixer.replaceText(closingIdentifier, replacement)];
+            },
+            data: deprecation,
+          });
+        }
       },
     };
   },

@@ -40,11 +40,19 @@ const optionsReplace: NoDeprecatedElementOptions = [
 ruleTester.run("no-deprecated-element", rule, {
   valid: [
     {
+      code: `<></>`,
+      options: optionsNoReplace,
+    },
+    {
       code: `<GoodElement />`,
       options: optionsNoReplace,
     },
     {
       code: `<GoodElement prop="Test" />`,
+      options: optionsNoReplace,
+    },
+    {
+      code: `<Parent.GoodElement prop="Test" />`,
       options: optionsNoReplace,
     },
     {
@@ -80,10 +88,23 @@ ruleTester.run("no-deprecated-element", rule, {
       ],
     },
     {
+      code: `<Parent.BadElement prop="Test" />`,
+      output: `<Parent.GoodElement prop="Test" />`,
+      options: optionsReplace,
+      errors: [
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
+      ],
+    },
+    {
       code: `<BadElement>WithChildren</BadElement>`,
       output: `<GoodElement>WithChildren</GoodElement>`,
       options: optionsReplace,
       errors: [
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
         {
           messageId: "noDeprecatedElement_replacement",
         },
@@ -94,6 +115,22 @@ ruleTester.run("no-deprecated-element", rule, {
       output: `<GoodElement prop="test">WithChildren</GoodElement>`,
       options: optionsReplace,
       errors: [
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
+      ],
+    },
+    {
+      code: `<Parent.BadElement prop="test">WithChildren</Parent.BadElement>`,
+      output: `<Parent.GoodElement prop="test">WithChildren</Parent.GoodElement>`,
+      options: optionsReplace,
+      errors: [
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
         {
           messageId: "noDeprecatedElement_replacement",
         },
@@ -120,9 +157,21 @@ ruleTester.run("no-deprecated-element", rule, {
       ],
     },
     {
+      code: `<Parent.BadElement prop="Test" />`,
+      options: optionsNoReplace,
+      errors: [
+        {
+          messageId: "noDeprecatedElement",
+        },
+      ],
+    },
+    {
       code: `<BadElement>WithChildren</BadElement>`,
       options: optionsNoReplace,
       errors: [
+        {
+          messageId: "noDeprecatedElement",
+        },
         {
           messageId: "noDeprecatedElement",
         },
@@ -132,6 +181,21 @@ ruleTester.run("no-deprecated-element", rule, {
       code: `<BadElement prop="test">WithChildren</BadElement>`,
       options: optionsNoReplace,
       errors: [
+        {
+          messageId: "noDeprecatedElement",
+        },
+        {
+          messageId: "noDeprecatedElement",
+        },
+      ],
+    },
+    {
+      code: `<Parent.BadElement prop="test">WithChildren</Parent.BadElement>`,
+      options: optionsNoReplace,
+      errors: [
+        {
+          messageId: "noDeprecatedElement",
+        },
         {
           messageId: "noDeprecatedElement",
         },
