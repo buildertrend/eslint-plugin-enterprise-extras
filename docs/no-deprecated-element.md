@@ -1,4 +1,4 @@
-# Flag and replace deprecated component usage (`replace-deprecated-component`)
+# Flag and replace deprecated component usage (`no-deprecated-element`)
 
 This rule ...
 
