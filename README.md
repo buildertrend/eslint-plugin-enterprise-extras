@@ -52,6 +52,11 @@ module.exports = {
 | [no-unstable-dependencies](/docs/no-unstable-dependencies.md)  | ✅ |  | Helps find dependencies that are used in React hook dependency arrays that will change values every time the component render is called |
 | [require-state-property-definition](/docs/require-state-property-definition.md)  | ✅ |  | Check for expected/unexpected state definitions in class components |
 | [max-indentation](/docs/max-indentation.md)  |  |  | prevents code blocks from exceeded a specified number of indents |
+
+## Contributing
+
+https://btwiki.atlassian.net/wiki/spaces/dv/pages/2319942076/eslint-plugin-enterprise-extras
+
 ## LICENSE
 
 MIT
