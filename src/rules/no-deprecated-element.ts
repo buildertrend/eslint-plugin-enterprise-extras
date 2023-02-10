@@ -2,22 +2,22 @@ import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
 import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint";
 
 type MessageIds = "noDeprecatedElement" | "noDeprecatedElement_replacement";
-type Replacement = {
+type Deprecated = {
   element: string;
-  with?: string;
+  replaceWith?: string;
 };
-type Options = [
+export type NoDeprecatedElementOptions = [
   {
-    replace?: Replacement[];
+    deprecate?: Deprecated[];
   }
 ];
 
-const buildReplacementMap = (
-  context: Readonly<RuleContext<MessageIds, Options>>
+const buildDeprecationMap = (
+  context: Readonly<RuleContext<MessageIds, NoDeprecatedElementOptions>>
 ): {
-  [key: string]: Replacement;
+  [key: string]: Deprecated;
 } => {
-  const replacements = context.options[0]?.replace;
+  const replacements = context.options[0]?.deprecate;
   const replacementMap =
     replacements?.reduce((acc, curr) => {
       return {
@@ -33,13 +33,13 @@ const buildReplacementMap = (
 const messages = {
   noDeprecatedElement: "<{{element}}> is deprecated",
   noDeprecatedElement_replacement:
-    "<{{element}}> is deprecated, use <{{with}}> instead.",
+    "<{{element}}> is deprecated, use <{{replaceWith}}> instead.",
 };
 
 export default ESLintUtils.RuleCreator(
   (name) =>
     `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
-)<Options, MessageIds>({
+)<NoDeprecatedElementOptions, MessageIds>({
   name: "no-deprecated-element",
   meta: {
     type: "suggestion",
@@ -53,7 +53,7 @@ export default ESLintUtils.RuleCreator(
       {
         type: "object",
         properties: {
-          replace: {
+          deprecate: {
             type: "array",
             items: {
               allOf: [
@@ -61,7 +61,7 @@ export default ESLintUtils.RuleCreator(
                   type: "object",
                   properties: {
                     element: { type: "string" },
-                    with: { type: "string" },
+                    replaceWith: { type: "string" },
                   },
                   required: ["element"],
                   additionalProperties: false,
@@ -76,44 +76,46 @@ export default ESLintUtils.RuleCreator(
   },
   defaultOptions: [{}],
   create: function (context) {
-    const replacementMap = buildReplacementMap(context);
-    const keysToReplace = Object.keys(replacementMap);
+    const deprecationMap = buildDeprecationMap(context);
+    const keysToDeprecate = Object.keys(deprecationMap);
     return {
       JSXElement: (jsxElement: TSESTree.JSXElement) => {
         const startingIdentifier = jsxElement.openingElement
           .name as TSESTree.JSXIdentifier;
 
-        if (!keysToReplace.includes(startingIdentifier.name)) {
+        if (!keysToDeprecate.includes(startingIdentifier.name)) {
           return;
         }
 
-        const replacement = replacementMap[startingIdentifier.name];
-        const messageId = replacement.with
-          ? "noDeprecatedElement_replacement"
-          : "noDeprecatedElement";
+        const deprecation = deprecationMap[startingIdentifier.name];
+        const replacement = deprecation.replaceWith;
+        if (replacement === undefined) {
+          context.report({
+            node: startingIdentifier,
+            messageId: "noDeprecatedElement",
+            data: {
+              ...deprecation,
+            },
+          });
+          return;
+        }
 
         context.report({
           node: startingIdentifier,
-          messageId,
-          fix: replacement.with
-            ? function (fixer) {
-                const fixes = [
-                  fixer.replaceText(startingIdentifier, replacement.with!),
-                ];
-                const closingIdentifier = jsxElement.closingElement?.name as
-                  | TSESTree.JSXIdentifier
-                  | undefined;
-                if (closingIdentifier) {
-                  fixes.push(
-                    fixer.replaceText(closingIdentifier, replacement.with!)
-                  );
-                }
+          messageId: "noDeprecatedElement_replacement",
+          fix: function (fixer) {
+            const fixes = [fixer.replaceText(startingIdentifier, replacement)];
+            const closingIdentifier = jsxElement.closingElement?.name as
+              | TSESTree.JSXIdentifier
+              | undefined;
+            if (closingIdentifier) {
+              fixes.push(fixer.replaceText(closingIdentifier, replacement));
+            }
 
-                return fixes;
-              }
-            : undefined,
+            return fixes;
+          },
           data: {
-            ...replacement,
+            ...deprecation,
           },
         });
       },
