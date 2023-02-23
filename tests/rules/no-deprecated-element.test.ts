@@ -31,7 +31,9 @@ const optionsReplace: NoDeprecatedElementOptions = [
     deprecate: [
       {
         element: "BadElement",
-        replaceWith: "GoodElement",
+        replace: {
+          element: "GoodElement",
+        },
       },
     ],
   },
