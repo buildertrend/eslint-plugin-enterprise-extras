@@ -123,7 +123,8 @@ Example using the advanced configuration above to translate an old component to 
     <Checkbox
       id="selectAll"
       data-testid="selectAll"
-      onChange={handleSelectAll}>
+      onChange={handleSelectAll}
+    >
       Select All
     </Checkbox>
   )
