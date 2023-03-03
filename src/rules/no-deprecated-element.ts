@@ -203,7 +203,7 @@ export default ESLintUtils.RuleCreator(
               const propsToRemove = new Set(
                 existingProps.filter(
                   (existingProp) =>
-                    existingProp.name.type === "JSXIdentifier" &&
+                    isJsxIdentifier(existingProp.name) &&
                     replacement.removeProps?.includes(existingProp.name.name)
                 )
               );
@@ -219,7 +219,7 @@ export default ESLintUtils.RuleCreator(
                 for (let keyToPullFrom of keysToPullValueFromArr ?? []) {
                   const existingPropToPullFrom = existingProps.find(
                     (existingProp) =>
-                      existingProp.name.type === "JSXIdentifier" &&
+                      isJsxIdentifier(existingProp.name) &&
                       existingProp.name.name === keyToPullFrom
                   );
                   if (existingPropToPullFrom) {
@@ -234,7 +234,7 @@ export default ESLintUtils.RuleCreator(
 
                 const propWithSameName = existingProps.find(
                   (existingProp) =>
-                    existingProp.name.type === "JSXIdentifier" &&
+                    isJsxIdentifier(existingProp.name) &&
                     existingProp.name.name === propToAdd.key
                 );
 
