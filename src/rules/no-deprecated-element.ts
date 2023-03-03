@@ -237,20 +237,20 @@ export default ESLintUtils.RuleCreator(
                     existingProp.name.name === propToAdd.key
                 );
 
-                const value = pulledValue ?? defaultTextToAdd;
+                let propValue = pulledValue ?? defaultTextToAdd;
+
+                // Shorthand booleans
+                if (propValue === `${propToAdd.key}={true}`) {
+                  propValue = propToAdd.key;
+                }
+
                 if (propWithSameName && propToAdd.overwrite) {
                   fixes.push(
-                    fixer.replaceTextRange(
-                      propWithSameName.range,
-                      value === "{true}" ? `${propToAdd.key}` : value
-                    )
+                    fixer.replaceTextRange(propWithSameName.range, propValue)
                   );
                 } else if (!propWithSameName) {
                   fixes.push(
-                    fixer.insertTextAfter(
-                      startingIdentifier,
-                      " " + (value === "{true}" ? `${propToAdd.key}` : value)
-                    )
+                    fixer.insertTextAfter(startingIdentifier, " " + propValue)
                   );
                 }
               });
@@ -267,8 +267,6 @@ export default ESLintUtils.RuleCreator(
                 fixer.replaceText(closingIdentifier, replacement.element)
               );
             }
-
-            console.log(fixes);
 
             return fixes;
           };
