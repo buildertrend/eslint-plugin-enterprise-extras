@@ -129,6 +129,12 @@ export const isJsxIdentifier = (
   return node?.type === "JSXIdentifier";
 };
 
+export const isJsxAttribute = (
+  node: TSESTree.Node
+): node is TSESTree.JSXAttribute => {
+  return node.type === "JSXAttribute";
+};
+
 export const isJsxMemberExpression = (
   node: TSESTree.JSXTagNameExpression | undefined
 ): node is TSESTree.JSXMemberExpression => {
