@@ -116,6 +116,7 @@ export default ESLintUtils.RuleCreator(
                                       {
                                         type: "array",
                                         items: { type: "string" },
+                                        minLength: 1,
                                       },
                                     ],
                                   },

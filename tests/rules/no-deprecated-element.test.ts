@@ -203,6 +203,7 @@ ruleTester.run("no-deprecated-element", rule, {
         },
       ],
     },
+
     // Prop translation/metaprogramming
     {
       code: `<BadElement deleteMe1="Test" deleteMe2 />`,
@@ -255,7 +256,7 @@ ruleTester.run("no-deprecated-element", rule, {
     },
     {
       code: `<BadElement />`,
-      output: `<GoodElement numberProp={123} stringProp="hello" functionProp={() => {}} falseProp={false} trueProp />`,
+      output: `<GoodElement numberProp={123} stringProp="hello" functionProp={() => {}} jsxProp={<div>Hello</div>} falseProp={false} trueProp />`,
       options: [
         {
           deprecate: [
@@ -275,6 +276,10 @@ ruleTester.run("no-deprecated-element", rule, {
                   {
                     key: "functionProp",
                     defaultValue: "{() => {}}",
+                  },
+                  {
+                    key: "jsxProp",
+                    defaultValue: "{<div>Hello</div>}",
                   },
                   {
                     key: "falseProp",
@@ -335,7 +340,7 @@ ruleTester.run("no-deprecated-element", rule, {
                   {
                     key: "replaced5",
                     defaultValue: "{false}",
-                    keysToPullValueFrom: ["replaceMe5"],
+                    keysToPullValueFrom: "replaceMe5",
                   },
                 ],
                 removeProps: [
@@ -370,9 +375,9 @@ ruleTester.run("no-deprecated-element", rule, {
                   {
                     key: "iShouldBeOverwritten",
                     defaultValue: "{2}",
+                    overwrite: true,
                   },
                 ],
-                removeProps: ["iShouldBeOverwritten"],
               },
             },
           ],
@@ -400,6 +405,73 @@ ruleTester.run("no-deprecated-element", rule, {
                     defaultValue: "{false}",
                   },
                 ],
+              },
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
+      ],
+    },
+
+    // Complex cases
+    {
+      code: `<><Checkbox id="chooseMeOverName" name="dontChooseMeOverId" /><Checkbox name="chooseMeCauseNoId" /></>`,
+      output: `<><MyCheckbox datatest-id="chooseMeOverName" id="chooseMeOverName" name="dontChooseMeOverId" /><MyCheckbox datatest-id="chooseMeCauseNoId" name="chooseMeCauseNoId" /></>`,
+      options: [
+        {
+          deprecate: [
+            {
+              element: "Checkbox",
+              replace: {
+                element: "MyCheckbox",
+                addProps: [
+                  {
+                    key: "datatest-id",
+                    defaultValue: "checkbox",
+                    keysToPullValueFrom: ["id", "name"],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
+        {
+          messageId: "noDeprecatedElement_replacement",
+        },
+      ],
+    },
+    {
+      code: `<Checkbox name="selectAll" checked={isChecked} />`,
+      output: `<MyCheckbox id="selectAll" data-testid="selectAll"  checked={isChecked} />`,
+      options: [
+        {
+          deprecate: [
+            {
+              element: "Checkbox",
+              replace: {
+                element: "MyCheckbox",
+                addProps: [
+                  {
+                    key: "id",
+                    defaultValue: "checkbox",
+                    keysToPullValueFrom: ["name"],
+                  },
+                  {
+                    key: "data-testid",
+                    defaultValue: "checkbox",
+                    keysToPullValueFrom: ["id", "name"],
+                  },
+                ],
+                removeProps: ["name"],
               },
             },
           ],
