@@ -107,9 +107,6 @@ ruleTester.run("no-deprecated-element", rule, {
         {
           messageId: "noDeprecatedElement_replacement",
         },
-        {
-          messageId: "noDeprecatedElement_replacement",
-        },
       ],
     },
     {
@@ -120,9 +117,6 @@ ruleTester.run("no-deprecated-element", rule, {
         {
           messageId: "noDeprecatedElement_replacement",
         },
-        {
-          messageId: "noDeprecatedElement_replacement",
-        },
       ],
     },
     {
@@ -130,9 +124,6 @@ ruleTester.run("no-deprecated-element", rule, {
       output: `<Parent.GoodElement prop="test">WithChildren</Parent.GoodElement>`,
       options: optionsReplace,
       errors: [
-        {
-          messageId: "noDeprecatedElement_replacement",
-        },
         {
           messageId: "noDeprecatedElement_replacement",
         },
@@ -174,9 +165,6 @@ ruleTester.run("no-deprecated-element", rule, {
         {
           messageId: "noDeprecatedElement",
         },
-        {
-          messageId: "noDeprecatedElement",
-        },
       ],
     },
     {
@@ -186,18 +174,12 @@ ruleTester.run("no-deprecated-element", rule, {
         {
           messageId: "noDeprecatedElement",
         },
-        {
-          messageId: "noDeprecatedElement",
-        },
       ],
     },
     {
       code: `<Parent.BadElement prop="test">WithChildren</Parent.BadElement>`,
       options: optionsNoReplace,
       errors: [
-        {
-          messageId: "noDeprecatedElement",
-        },
         {
           messageId: "noDeprecatedElement",
         },

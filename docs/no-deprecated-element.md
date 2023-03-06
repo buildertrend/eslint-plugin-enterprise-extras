@@ -1,15 +1,15 @@
 # Flag and replace deprecated component usage (`no-deprecated-element`)
 
-This rule allows you to flag a specific jsx element as deprecated, and optionally offer a replacement. Advanced configuration can be used with this rule to enable additional metaprogramming that can add/translate/remove props from the deprecated component to the new component
+This rule allows you to flag a specific jsx element as deprecated, and optionally offer a replacement. Advanced configuration can be used with this rule to enable additional meta-programming that can add/translate/remove props from the deprecated component to the new component
 
 ## Rule Details
 
-A majority of how this rule works comes down to the configuration. It simply allows you to blacklist a specific element, and optionally offer a replacement element.
+A majority of how this rule works comes down to the configuration. It simply allows you to blacklist a specific element, and optionally offer a replacement element. 
 
-> For now, this simply replaces the element name, without adjusting props or imports for a given file. 
+> This plugin does not adjust imports for a given file. 
 
 ```json
-"enterprise-extras/no-deprecated-element": [
+"@buildertrend/enterprise-extras/no-deprecated-element": [
     "warn",
     {
         deprecate: [
@@ -61,7 +61,7 @@ In the case that the new component just adds/removes or translates a few props f
 
 Here is an example configuration demonstrating this:
 ```javascript
-"enterprise-extras/no-deprecated-element": [
+"@buildertrend/enterprise-extras/no-deprecated-element": [
     "warn",
     {
         deprecate: [
@@ -83,10 +83,10 @@ Here is an example configuration demonstrating this:
                       // the defaultValue for the prop is used instead
                       keysToPullValueFrom: ["name"],
 
-                      // Tells the autofixer to NOT override the
+                      // Tells the autofixer to NOT overwrite the
                       // prop if a prop with the same name already exists
                       // on the deprecated component 
-                      override: false
+                      overwrite: false
                     },
                     {
                       key: "data-testid",
@@ -94,7 +94,7 @@ Here is an example configuration demonstrating this:
                       // Can pull values from multiple keys if desired in order of
                       // priority
                       keysToPullValueFrom: ["id", "name"],
-                      override: true
+                      overwrite: true
                     },
                   ],
                   // Remove any props in this array AFTER any props are added
@@ -131,13 +131,13 @@ Example using the advanced configuration above to translate an old component to 
 }
 ```
 
-**NOTE:** Autofixing is experimental. In addition, it does not handle formatting automatically. Using an opinionated formatter, like Prettier, is highly recommended to resolve non-symantic issues (extra spaces) with the fixer.
+**NOTE:** Autofixing is experimental. In addition, it does not handle formatting automatically. Using an opinionated formatter, like Prettier, is highly recommended to resolve non-semantic issues (extra spaces) with the fixer.
 
 ## When Not To Use It
 
 Don't use this if you don't have elements you are looking to deprecate or have cleaned up all existing usages.
 
-Don't use this for complicated metaprogramming while replacing a component beyond adding props, removing props, or translating/renaming props. For these even more complex deprecations, consider creating a separate linting plugin that can handle these more advanced, or programatic use cases.
+Don't use this for complicated meta-programming while replacing a component beyond adding props, removing props, or translating/renaming props. For these even more complex deprecations, consider creating a separate linting plugin that can handle these more advanced, or programmatic use cases.
 ## Auto-fixable?
 
 Yes ✔️
