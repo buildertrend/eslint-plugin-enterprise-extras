@@ -179,14 +179,6 @@ export default ESLintUtils.RuleCreator(
             messageId: "noDeprecatedElement",
             data: deprecation,
           });
-
-          if (closingIdentifier !== undefined) {
-            context.report({
-              node: closingIdentifier,
-              messageId: "noDeprecatedElement",
-              data: deprecation,
-            });
-          }
           return;
         }
 
@@ -281,18 +273,6 @@ export default ESLintUtils.RuleCreator(
             replaceElement: replacement.element,
           },
         });
-
-        if (closingIdentifier !== undefined) {
-          context.report({
-            node: closingIdentifier,
-            messageId: "noDeprecatedElement_replacement",
-            fix: replacementFixer,
-            data: {
-              element: deprecation.element,
-              replaceElement: replacement.element,
-            },
-          });
-        }
       },
     };
   },
