@@ -1,29 +1,31 @@
 {
   "name": "@buildertrend/eslint-plugin-enterprise-extras",
   "description": "Extra eslint rules for enterprise environments focusing on React and Typescript",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "/dist"
   ],
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.10.0",
-    "@typescript-eslint/parser": "5.10.0",
-    "eslint": "7.32.0"
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
+    "@typescript-eslint/rule-tester": "^7.14.1",
+    "eslint": "^8.56.0"
   },
   "devDependencies": {
-    "@types/node": "14.14.35",
-    "jest": "26.6.3",
-    "prettier": "2.3.1",
-    "rimraf": "3.0.2",
-    "ts-jest": "26.5.4",
-    "typescript": "4.4.4"
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.14.9",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.2",
+    "rimraf": "^5.0.7",
+    "ts-jest": "^29.1.5",
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "eslint": "^7",
-    "@typescript-eslint/eslint-plugin": "^5",
-    "@typescript-eslint/parser": "^5"
+    "@typescript-eslint/eslint-plugin": ">=5",
+    "@typescript-eslint/parser": ">=5",
+    "eslint": ">=7"
   },
   "scripts": {
     "clean": "rimraf dist/",
@@ -56,6 +58,10 @@
     {
       "name": "Cameron Hessler",
       "email": "cameron.hessler@buildertrend.com"
+    },
+    {
+      "name": "Daric Teske",
+      "email": "daric.teske@buildertrend.com"
     }
   ],
   "license": "MIT",

@@ -17,13 +17,13 @@ type Options = [];
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "require-state-property-definition",
   meta: {
     type: "problem",
     docs: {
-      recommended: "warn",
+      recommended: "recommended",
       description:
         "For class components that use state, a state property should be defined before mount. Also ensures that state properties are NOT defined if no state type was provided as a type argument to React.Component or React.PureComponent.",
     },
@@ -71,16 +71,16 @@ export default ESLintUtils.RuleCreator(
     };
 
     const getStatePropertyDefinition = (
-      classDeclaration: TSESTree.ClassDeclaration
+      classDeclaration: TSESTree.ClassDeclaration,
     ) => {
       return classDeclaration.body.body.find(isStatePropertyDefinition);
     };
 
     const getStateConstructorDefinition = (
-      classDeclaration: TSESTree.ClassDeclaration
+      classDeclaration: TSESTree.ClassDeclaration,
     ) => {
       const constructor = classDeclaration.body.body.find(
-        isConstructorDefinition
+        isConstructorDefinition,
       ) as
         | TSESTree.MethodDefinitionComputedName
         | TSESTree.MethodDefinitionNonComputedName
@@ -92,7 +92,7 @@ export default ESLintUtils.RuleCreator(
     };
 
     const getStateDefinition = (
-      classDeclaration: TSESTree.ClassDeclaration
+      classDeclaration: TSESTree.ClassDeclaration,
     ) => {
       return (
         getStatePropertyDefinition(classDeclaration) ||
@@ -103,12 +103,12 @@ export default ESLintUtils.RuleCreator(
     return {
       // Add event listener registrations made in class components to the stack
       "ClassDeclaration[superClass.property.name=/Component|PureComponent/]": (
-        classDeclaration: TSESTree.ClassDeclaration
+        classDeclaration: TSESTree.ClassDeclaration,
       ) => {
         const stateDefinition = getStateDefinition(classDeclaration);
         const hasStateTypeDefinition =
-          classDeclaration.superTypeParameters &&
-          classDeclaration.superTypeParameters.params.length >= 2;
+          classDeclaration.superTypeArguments &&
+          classDeclaration.superTypeArguments.params.length >= 2;
 
         if (stateDefinition && !hasStateTypeDefinition) {
           context.report({
