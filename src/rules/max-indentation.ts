@@ -5,18 +5,17 @@ import { isLiteral } from "../utils/type-guards";
 type MessageIds = "maxIndentationExceeded";
 type Options = [
   number,
-  { includeSpaces: boolean; includeTab: boolean; spacesPerTab: number }
+  { includeSpaces: boolean; includeTab: boolean; spacesPerTab: number },
 ];
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "max-indentation",
   meta: {
     type: "layout",
     docs: {
-      recommended: false,
       description:
         "Limits the maximum number of times a line can be indented to improve readability. Especially useful in conjunction with other code formatting tools like Prettier.",
     },
@@ -73,7 +72,7 @@ export default ESLintUtils.RuleCreator(
     }
     const combinedExp = groupExp.join("|");
     const maxWhitespaceRegExp = new RegExp(
-      `(${combinedExp}){${maxNumberOfIndentation + 1},}`
+      `(${combinedExp}){${maxNumberOfIndentation + 1},}`,
     );
 
     // Module store of errors that we have found
@@ -93,7 +92,7 @@ export default ESLintUtils.RuleCreator(
             errorLocStart.column < locStart.column) ||
           (errorLocStart.line === locEnd.line &&
             errorLocStart.column >= locEnd.column) ||
-          errorLocStart.line > locEnd.line
+          errorLocStart.line > locEnd.line,
       );
     }
 
@@ -101,7 +100,7 @@ export default ESLintUtils.RuleCreator(
       const shouldCheckStrings =
         isLiteral(node) && typeof node.value === "string";
       const shouldCheckRegExps = Boolean(
-        (node as TSESTree.RegExpLiteral).regex
+        (node as TSESTree.RegExpLiteral).regex,
       );
 
       if (shouldCheckStrings || shouldCheckRegExps) {
@@ -113,7 +112,7 @@ export default ESLintUtils.RuleCreator(
     }
 
     function removeInvalidNodeErrorsInTemplateLiteral(
-      node: TSESTree.TemplateElement
+      node: TSESTree.TemplateElement,
     ) {
       if (typeof node.value.raw === "string") {
         if (maxWhitespaceRegExp.test(node.value.raw)) {

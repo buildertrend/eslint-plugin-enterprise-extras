@@ -9,13 +9,13 @@ const globalVarRegex = /window|global/;
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "no-unhandled-scheduling",
   meta: {
     type: "suggestion",
     docs: {
-      recommended: "warn",
+      recommended: "strict",
       description:
         "When using Javascript scheduling (`setTimeout` or `setInterval`), it is recommended to support cancelling of the task, especially within React components.",
     },

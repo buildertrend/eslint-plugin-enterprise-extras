@@ -23,7 +23,7 @@ const reactLifecycleMethods = new Set([
 ]);
 
 const isLifecycleMethod = (
-  method: TSESTree.PropertyDefinition | TSESTree.MethodDefinition
+  method: TSESTree.PropertyDefinition | TSESTree.MethodDefinition,
 ) => {
   return (
     method.key.type === "Identifier" &&
@@ -33,14 +33,14 @@ const isLifecycleMethod = (
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "private-component-methods",
   meta: {
     type: "suggestion",
     fixable: "code",
     docs: {
-      recommended: "error",
+      recommended: "recommended",
       description:
         "Non-lifecycle methods for React class components should be private to help find unused handlers",
     },
@@ -54,7 +54,7 @@ export default ESLintUtils.RuleCreator(
   create: function (context) {
     return {
       "ClassDeclaration[superClass.property.name=/PureComponent|Component/]": (
-        classDecl: TSESTree.ClassDeclaration
+        classDecl: TSESTree.ClassDeclaration,
       ) => {
         classDecl.body.body
           .filter((classEl) => {
@@ -71,7 +71,7 @@ export default ESLintUtils.RuleCreator(
                 node: b.key,
                 messageId: "privateMethods",
                 fix: (fixer) => fixer.insertTextBefore(b, "private "),
-              })
+              }),
           );
       },
     };
