@@ -1,9 +1,9 @@
 import rule from "../../src/rules/require-state-property-definition";
-import { ESLintUtils } from "@typescript-eslint/utils";
+import { RuleTester } from "@typescript-eslint/rule-tester";
 import { resolve, join } from "path";
 
-const ruleTester = new ESLintUtils.RuleTester({
-  parser: resolve("./node_modules/@typescript-eslint/parser") as any,
+const ruleTester = new RuleTester({
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2018,
     tsconfigRootDir: join(__dirname, "../fixtures"),

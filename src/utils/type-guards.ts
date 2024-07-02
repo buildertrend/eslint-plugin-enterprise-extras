@@ -1,7 +1,7 @@
 import { TSESTree } from "@typescript-eslint/utils";
 
 export const isPropertyDefinition = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.PropertyDefinition => {
   return (
     // Will need to switch "any" when the typescript-eslint is updated
@@ -11,14 +11,14 @@ export const isPropertyDefinition = (
 };
 
 export const isMethodDefinition = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.MethodDefinition => {
   return node.type === "MethodDefinition";
 };
 
 const funcExpRegex = /^(Arrow)?FunctionExpression$/;
 export const isMethod = (
-  node: TSESTree.ClassElement
+  node: TSESTree.ClassElement,
 ): node is TSESTree.PropertyDefinition | TSESTree.MethodDefinition => {
   return (
     (isPropertyDefinition(node) &&
@@ -29,31 +29,31 @@ export const isMethod = (
 };
 
 export const isExpressionStatement = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.ExpressionStatement => {
   return node.type === "ExpressionStatement";
 };
 
 export const isMemberExpression = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.MemberExpression => {
   return node.type === "MemberExpression";
 };
 
 export const isThisExpression = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.ThisExpression => {
   return node.type === "ThisExpression";
 };
 
 export const isAssignmentExpression = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.AssignmentExpression => {
   return node.type === "AssignmentExpression";
 };
 
 export const isFunctionDeclaration = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.ArrowFunctionExpression | TSESTree.FunctionDeclaration => {
   return (
     node.type === "ArrowFunctionExpression" ||
@@ -66,13 +66,16 @@ export const isLiteral = (node: TSESTree.Node): node is TSESTree.Literal => {
 };
 
 export const isIdentifier = (
-  node: TSESTree.Expression | TSESTree.PrivateIdentifier
+  node:
+    | TSESTree.Expression
+    | TSESTree.PrivateIdentifier
+    | TSESTree.SpreadElement,
 ): node is TSESTree.Identifier => {
   return node.type === "Identifier";
 };
 
 export const isAsExpression = (
-  node: TSESTree.Expression
+  node: TSESTree.Expression,
 ): node is TSESTree.TSAsExpression => {
   return node.type === "TSAsExpression";
 };
@@ -95,19 +98,19 @@ type UnstableExpression =
   | TSESTree.JSXElement
   | TSESTree.JSXFragment;
 export const isUnstableExpression = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is UnstableExpression => {
   return setOfUnstableAssignmentTypes.has(node.type);
 };
 
 export const isAssignmentPattern = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.AssignmentPattern => {
   return node.type === "AssignmentPattern";
 };
 
 export const isVariableDeclarator = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.VariableDeclarator => {
   return node.type === "VariableDeclarator";
 };
@@ -124,19 +127,19 @@ export const isUnstableAssignment = (node: TSESTree.Node) => {
 };
 
 export const isJsxIdentifier = (
-  node: TSESTree.JSXTagNameExpression | undefined
+  node: TSESTree.JSXTagNameExpression | undefined,
 ): node is TSESTree.JSXIdentifier => {
   return node?.type === "JSXIdentifier";
 };
 
 export const isJsxAttribute = (
-  node: TSESTree.Node
+  node: TSESTree.Node,
 ): node is TSESTree.JSXAttribute => {
   return node.type === "JSXAttribute";
 };
 
 export const isJsxMemberExpression = (
-  node: TSESTree.JSXTagNameExpression | undefined
+  node: TSESTree.JSXTagNameExpression | undefined,
 ): node is TSESTree.JSXMemberExpression => {
   return node?.type === "JSXMemberExpression";
 };

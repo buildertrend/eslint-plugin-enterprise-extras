@@ -11,13 +11,13 @@ interface ISubscription {
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "unregister-events",
   meta: {
     type: "problem",
     docs: {
-      recommended: "error",
+      recommended: "recommended",
       description:
         "After registering event listeners in React components, event handlers should be unregistered when the component is unmounted.",
     },
@@ -59,12 +59,12 @@ export default ESLintUtils.RuleCreator(
     };
 
     const reportSubscriptionsMissingRemoveCalls = (
-      componentType: "hook" | "classComponent"
+      componentType: "hook" | "classComponent",
     ) => {
       addedSubscriptions
         .filter((addedSubscription) => {
           return !removedSubscriptions.some((removedSubscription) =>
-            isSameSubscription(addedSubscription, removedSubscription)
+            isSameSubscription(addedSubscription, removedSubscription),
           );
         })
         .forEach((error) => {
@@ -104,7 +104,7 @@ export default ESLintUtils.RuleCreator(
     };
 
     const pushRemoveSubscription = (
-      callExpression: TSESTree.CallExpression
+      callExpression: TSESTree.CallExpression,
     ) => {
       // If the callExpression fails these checks, chances are you have compiler errors anyways, so we can ignore adding to the stack
       if (

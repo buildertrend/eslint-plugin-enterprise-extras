@@ -13,7 +13,7 @@ type Options = [];
  * - `bar[5].fizz` returns undefined
  */
 const getParentObjectOfMemberExpression = (
-  memberExp: TSESTree.MemberExpression
+  memberExp: TSESTree.MemberExpression,
 ):
   | TSESTree.Expression
   | TSESTree.Identifier
@@ -32,7 +32,7 @@ const getParentObjectOfMemberExpression = (
 
 const libDomFileNameRegex = /typescript.+lib.+lib\.dom\.d\.ts/;
 const isTypeDeclarationFromLibDom = (
-  declaration: Declaration | undefined | null
+  declaration: Declaration | undefined | null,
 ) => {
   const fileName = declaration?.getSourceFile()?.fileName;
   return fileName && libDomFileNameRegex.test(fileName);
@@ -49,14 +49,14 @@ const isWindowLocationType = (type: Type) => {
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "no-href-assignment",
   meta: {
     type: "suggestion",
     fixable: "code",
     docs: {
-      recommended: "error",
+      recommended: "recommended",
       description: "Prefer using location.assign() to make testing easier",
     },
     messages: {
@@ -89,7 +89,7 @@ export default ESLintUtils.RuleCreator(
                   return [
                     fixer.replaceTextRange(
                       [leftExp.property.range[0], assignExp.right.range[0]],
-                      "assign("
+                      "assign(",
                     ),
                     fixer.insertTextAfter(assignExp.right, ")"),
                   ];

@@ -24,11 +24,11 @@ type Deprecated = {
 export type NoDeprecatedElementOptions = [
   {
     deprecate?: Deprecated[];
-  }
+  },
 ];
 
 const buildDeprecationMap = (
-  context: Readonly<RuleContext<MessageIds, NoDeprecatedElementOptions>>
+  context: Readonly<RuleContext<MessageIds, NoDeprecatedElementOptions>>,
 ): {
   [key: string]: Deprecated;
 } => {
@@ -68,14 +68,14 @@ const messages = {
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<NoDeprecatedElementOptions, MessageIds>({
   name: "no-deprecated-element",
   meta: {
     type: "suggestion",
     fixable: "code",
     docs: {
-      recommended: "error",
+      recommended: "recommended",
       description: "Deprecated elements should not be used",
     },
     messages,
@@ -116,7 +116,6 @@ export default ESLintUtils.RuleCreator(
                                       {
                                         type: "array",
                                         items: { type: "string" },
-                                        minLength: 1,
                                       },
                                     ],
                                   },
@@ -156,10 +155,10 @@ export default ESLintUtils.RuleCreator(
     return {
       JSXElement: (jsxElement: TSESTree.JSXElement) => {
         const startingIdentifier = getJsxIdentifier(
-          jsxElement.openingElement.name
+          jsxElement.openingElement.name,
         );
         const closingIdentifier = getJsxIdentifier(
-          jsxElement.closingElement?.name
+          jsxElement.closingElement?.name,
         );
         // If the start wasn't able to be parsed, stop processing
         if (startingIdentifier === undefined) {
@@ -182,87 +181,88 @@ export default ESLintUtils.RuleCreator(
           return;
         }
 
-        const replacementFixer: Parameters<typeof context["report"]>[0]["fix"] =
-          (fixer) => {
-            let fixes = [
-              fixer.replaceText(startingIdentifier, replacement.element),
-            ];
+        const replacementFixer: Parameters<
+          (typeof context)["report"]
+        >[0]["fix"] = (fixer) => {
+          let fixes = [
+            fixer.replaceText(startingIdentifier, replacement.element),
+          ];
 
-            if (replacement.removeProps || replacement.addProps) {
-              const existingProps =
-                jsxElement.openingElement.attributes.filter(isJsxAttribute);
+          if (replacement.removeProps || replacement.addProps) {
+            const existingProps =
+              jsxElement.openingElement.attributes.filter(isJsxAttribute);
 
-              const propsToRemove = new Set(
-                existingProps.filter(
+            const propsToRemove = new Set(
+              existingProps.filter(
+                (existingProp) =>
+                  isJsxIdentifier(existingProp.name) &&
+                  replacement.removeProps?.includes(existingProp.name.name),
+              ),
+            );
+
+            (replacement.addProps ?? []).forEach((propToAdd) => {
+              let defaultTextToAdd = `${propToAdd.key}=${propToAdd.defaultValue}`;
+
+              let pulledValue: string | undefined;
+              const keysToPullValueFromArr =
+                typeof propToAdd.keysToPullValueFrom === "string"
+                  ? [propToAdd.keysToPullValueFrom]
+                  : propToAdd.keysToPullValueFrom;
+              for (let keyToPullFrom of keysToPullValueFromArr ?? []) {
+                const existingPropToPullFrom = existingProps.find(
                   (existingProp) =>
                     isJsxIdentifier(existingProp.name) &&
-                    replacement.removeProps?.includes(existingProp.name.name)
-                )
-              );
-
-              (replacement.addProps ?? []).forEach((propToAdd) => {
-                let defaultTextToAdd = `${propToAdd.key}=${propToAdd.defaultValue}`;
-
-                let pulledValue: string | undefined;
-                const keysToPullValueFromArr =
-                  typeof propToAdd.keysToPullValueFrom === "string"
-                    ? [propToAdd.keysToPullValueFrom]
-                    : propToAdd.keysToPullValueFrom;
-                for (let keyToPullFrom of keysToPullValueFromArr ?? []) {
-                  const existingPropToPullFrom = existingProps.find(
-                    (existingProp) =>
-                      isJsxIdentifier(existingProp.name) &&
-                      existingProp.name.name === keyToPullFrom
-                  );
-                  if (existingPropToPullFrom) {
-                    pulledValue = existingPropToPullFrom.value
-                      ? `${propToAdd.key}=${context
-                          .getSourceCode()
-                          .getText(existingPropToPullFrom.value)}`
-                      : `${propToAdd.key}={true}`;
-                    break;
-                  }
-                }
-
-                const propWithSameName = existingProps.find(
-                  (existingProp) =>
-                    isJsxIdentifier(existingProp.name) &&
-                    existingProp.name.name === propToAdd.key
+                    existingProp.name.name === keyToPullFrom,
                 );
-
-                let propValue = pulledValue ?? defaultTextToAdd;
-
-                // Shorthand booleans
-                if (propValue === `${propToAdd.key}={true}`) {
-                  propValue = propToAdd.key;
+                if (existingPropToPullFrom) {
+                  pulledValue = existingPropToPullFrom.value
+                    ? `${propToAdd.key}=${context
+                        .getSourceCode()
+                        .getText(existingPropToPullFrom.value)}`
+                    : `${propToAdd.key}={true}`;
+                  break;
                 }
+              }
 
-                if (propWithSameName && propToAdd.overwrite) {
-                  fixes.push(
-                    fixer.replaceTextRange(propWithSameName.range, propValue)
-                  );
-                } else if (!propWithSameName) {
-                  fixes.push(
-                    fixer.insertTextAfter(startingIdentifier, " " + propValue)
-                  );
-                }
-              });
-
-              fixes = fixes.concat(
-                Array.from(propsToRemove).map((propToRemove) =>
-                  fixer.remove(propToRemove)
-                )
+              const propWithSameName = existingProps.find(
+                (existingProp) =>
+                  isJsxIdentifier(existingProp.name) &&
+                  existingProp.name.name === propToAdd.key,
               );
-            }
 
-            if (closingIdentifier !== undefined) {
-              fixes.push(
-                fixer.replaceText(closingIdentifier, replacement.element)
-              );
-            }
+              let propValue = pulledValue ?? defaultTextToAdd;
 
-            return fixes;
-          };
+              // Shorthand booleans
+              if (propValue === `${propToAdd.key}={true}`) {
+                propValue = propToAdd.key;
+              }
+
+              if (propWithSameName && propToAdd.overwrite) {
+                fixes.push(
+                  fixer.replaceTextRange(propWithSameName.range, propValue),
+                );
+              } else if (!propWithSameName) {
+                fixes.push(
+                  fixer.insertTextAfter(startingIdentifier, " " + propValue),
+                );
+              }
+            });
+
+            fixes = fixes.concat(
+              Array.from(propsToRemove).map((propToRemove) =>
+                fixer.remove(propToRemove),
+              ),
+            );
+          }
+
+          if (closingIdentifier !== undefined) {
+            fixes.push(
+              fixer.replaceText(closingIdentifier, replacement.element),
+            );
+          }
+
+          return fixes;
+        };
 
         context.report({
           node: startingIdentifier,

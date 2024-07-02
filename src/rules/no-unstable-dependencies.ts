@@ -15,14 +15,14 @@ const hooksWithDependenciesRegex = "use(Callback|Memo|Effect)";
 
 export default ESLintUtils.RuleCreator(
   (name) =>
-    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`
+    `https://github.com/buildertrend/eslint-plugin-enterprise-extras/blob/main/docs/${name}.md`,
 )<Options, MessageIds>({
   name: "no-unstable-dependencies",
   meta: {
     type: "suggestion",
     fixable: "code",
     docs: {
-      recommended: "error",
+      recommended: "recommended",
       description:
         "Unstable dependencies should be avoided in React hook dependency arrays",
     },
@@ -40,9 +40,9 @@ export default ESLintUtils.RuleCreator(
         const scope = context.getScope();
 
         useHookCall.arguments[1].elements.forEach((dependency) => {
-          if (isIdentifier(dependency)) {
+          if (dependency !== null && isIdentifier(dependency)) {
             const depReference = scope.references.find(
-              (ref) => ref.identifier === dependency
+              (ref) => ref.identifier === dependency,
             );
 
             if (depReference) {
@@ -63,7 +63,7 @@ export default ESLintUtils.RuleCreator(
                     writeReferences &&
                     writeReferences.length > 0 &&
                     writeReferences.every((writeReference) =>
-                      isUnstableExpression(writeReference!)
+                      isUnstableExpression(writeReference!),
                     )
                   ) {
                     writeReferences.forEach((writeReference) => {
